@@ -73,7 +73,6 @@ dist
 
 # Gatsby files
 .cache/
-public
 
 # Storybook build outputs
 .out
@@ -101,3 +100,4 @@ Desktop.ini
 
 featuresAddon.text
 docs.md
+production_issues.txt
