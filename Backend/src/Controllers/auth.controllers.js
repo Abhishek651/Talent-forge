@@ -54,7 +54,12 @@ async function registerUserController(req, res) {
     )
 
     // Set the token in a cookie and send a success response
-    res.cookie('token', token)
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000
+    })
     res.status(201).json({
         message: "User registered successfully",
         user: {
@@ -101,7 +106,12 @@ async function loginUserController(req, res) {
     )
 
     // Set the token in a cookie and send a success response
-    res.cookie('token', token)
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000
+    })
     res.status(200).json({
         message: "User logged in successfully",
         user: {
@@ -122,7 +132,11 @@ async function logoutUserController(req, res) {
     console.log(req.header.cookie)
     if(token) {
         await blacklistModal.create({token})
-        res.clearCookie('token')
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        })
         res.status(200).json({message: "User logged out successfully"})
     }else{
         res.status(400).json({message: "No token found"})
