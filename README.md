@@ -1,9 +1,9 @@
 <div align="center">
-  <h1>
-    <img src="./Frontend/public/favicon.svg" alt="TalentForge Logo" width="45" align="center" /> 
-    TalentForge
+  <h1> 
+    📜 TalentForge
   </h1>
   <p><strong>AI-Powered Intelligent Interview Simulation Platform</strong></p>
+  <h3><a href="https://talent-forge.onrender.com">🌍 View Live Demo</a></h3>
 </div>
 
 <br />
