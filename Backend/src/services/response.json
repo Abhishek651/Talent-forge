@@ -1,0 +1,110 @@
+{
+  "_id": {
+    "$oid": "69de6e9e664e29050f50c093"
+  },
+  "jobDescription": "We are looking for a skilled Full Stack Developer who can design, develop, and maintain web applications using modern technologies. The ideal candidate should be comfortable working on both frontend and backend.\r\n\r\n🛠️ Key Responsibilities\r\nDevelop responsive user interfaces using HTML, CSS, and JavaScript\r\nBuild backend services using Node.js or similar technologies\r\nWork with databases like MongoDB or MySQL\r\nCollaborate with designers and other developers\r\nDebug and optimize application performance\r\nMaintain code quality and follow best practices\r\n🎓 Required Skills & Qualifications\r\nBasic understanding of frontend development (HTML, CSS, JS)\r\nKnowledge of frameworks like React.js\r\nFamiliarity with backend technologies (Node.js, Express)\r\nUnderstanding of version control tools like Git\r\nProblem-solving and logical thinking skills",
+  "selfDescription": "",
+  "matchScore": 78,
+  "scoreBreakdown": {
+    "technical": 80,
+    "communication": 75,
+    "experience": 79
+  },
+  "technicalQuestions": [
+    {
+      "question": "Can you describe a recent project where you used Node.js and Express to build a backend service?",
+      "intention": "Assess practical experience with required backend technologies and understanding of RESTful design.",
+      "answer": "In the internal college hackathon, I led a team to create a web solution where I built the server using Node.js and Express. I designed REST endpoints for CRUD operations, connected to a MySQL database, and implemented basic authentication. The API was consumed by a simple HTML/CSS/JS front‑end we also created."
+    },
+    {
+      "question": "How do you manage state and component communication in a React application?",
+      "intention": "Evaluate knowledge of React fundamentals, which is listed as a currently learning skill.",
+      "answer": "I’m currently learning React. I understand that state can be managed locally with useState and shared across components using Context API or state‑management libraries like Redux. I plan to apply these concepts in upcoming projects."
+    },
+    {
+      "question": "What strategies do you use to optimize front‑end performance for responsive UI?",
+      "intention": "Gauge understanding of performance best practices aligned with the role’s responsibilities.",
+      "answer": "I use CSS media queries and flexible grids to ensure responsiveness, minimize reflows by batching DOM updates, lazy‑load images, and leverage browser caching. I also audit performance with Chrome DevTools to spot bottlenecks."
+    },
+    {
+      "question": "Explain how you use Git in your development workflow.",
+      "intention": "Confirm familiarity with version control tools required for the position.",
+      "answer": "I create a feature branch for each task, commit frequently with clear messages, and push to GitHub. Before merging, I open a pull request, request reviews, and resolve any conflicts. I also tag releases and use tags for versioning."
+    },
+    {
+      "question": "Can you write a SQL query to retrieve all users who have placed an order in the last 30 days?",
+      "intention": "Test practical MySQL knowledge.",
+      "answer": "SELECT u.* FROM users u JOIN orders o ON u.id = o.user_id WHERE o.order_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);"
+    }
+  ],
+  "behavioralQuestions": [
+    {
+      "question": "Tell me about a time you had to lead a team through a technical challenge during a hackathon.",
+      "intention": "Assess leadership, teamwork, and problem‑solving under pressure.",
+      "answer": "During the Smart India Hackathon internal level, our team faced a tight deadline to prototype a solution. I divided tasks based on each member’s strengths, organized short stand‑ups to track progress, and facilitated quick decision‑making when we hit a roadblock with the API integration. We delivered a functional demo on time and received positive feedback from judges."
+    },
+    {
+      "question": "Describe a situation where you had to learn a new technology quickly to meet a project’s needs.",
+      "intention": "Evaluate fast learning ability and adaptability.",
+      "answer": "For a recent hackathon, I needed to implement a real‑time chat feature but had never used Socket.io. I spent a weekend reading documentation, watching tutorial videos, and building a small prototype. I then integrated it into our project, which impressed the judges and helped us win a recognition award."
+    },
+    {
+      "question": "How do you handle disagreements with a teammate about a design decision?",
+      "intention": "Understand conflict resolution and communication style.",
+      "answer": "I first listen to the teammate’s perspective to understand their concerns. Then I present data or examples supporting my view, and we discuss pros and cons together. If we still differ, we involve a senior developer or mentor to provide an unbiased opinion, ensuring the final decision serves project goals."
+    }
+  ],
+  "skillGaps": [
+    {
+      "skill": "React.js",
+      "severity": "medium"
+    },
+    {
+      "skill": "Advanced Data Structures & Algorithms",
+      "severity": "low"
+    },
+    {
+      "skill": "MongoDB (NoSQL)",
+      "severity": "medium"
+    }
+  ],
+  "preparationPlan": [
+    {
+      "day": 1,
+      "focus": "bridge React gap",
+      "tasks": [
+        "Review React fundamentals (components, state, props)",
+        "Build a small Todo app with Create React App",
+        "Practice React hooks (useState, useEffect)"
+      ]
+    },
+    {
+      "day": 2,
+      "focus": "add NoSQL knowledge",
+      "tasks": [
+        "Study MongoDB basics (CRUD, schema design)",
+        "Convert a MySQL table to a MongoDB collection in a sample project",
+        "Read about Mongoose ODM"
+      ]
+    },
+    {
+      "day": 3,
+      "focus": "strengthen algorithm basics and interview confidence",
+      "tasks": [
+        "Solve 5 medium DSA problems on LeetCode (arrays, linked lists)",
+        "Review time/space complexity analysis",
+        "Mock interview with a peer focusing on behavioral answers"
+      ]
+    }
+  ],
+  "user": {
+    "$oid": "69d903235a418b6bf6756051"
+  },
+  "createdAt": {
+    "$date": "2026-04-14T16:43:10.029Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T16:43:10.029Z"
+  },
+  "__v": 0
+}
