@@ -3,7 +3,7 @@ import axios from 'axios';
 // 1. Create a custom Axios instance
 // This prevents us from re-typing the same Base URL and settings for every request.
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api/auth', // Base URL for all auth routes
+    baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/auth`, // Base URL for all auth routes
     withCredentials: true // Automatically sends and receives cookies (vital for secure login sessions)
 });
 
