@@ -8,14 +8,12 @@ import { useNavigate } from "react-router";
 import RecentlyCreated from "../components/recentlyCreated";
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const Home = () => {
   const {
     loading,
     setLoading,
-    report,
-    reportList,
     generateReport,
     getAllReports,
     error,
@@ -35,7 +33,7 @@ const Home = () => {
     "Generating a personalized plan...",
     "Polishing the report...",
     "Finalizing your interview dashboard...",
-    "Almost ready, just a few more seconds..."
+    "Almost ready, just a few more seconds...",
   ];
   const [loadingText, setLoadingText] = useState(loadingMessages[0]);
 
@@ -51,13 +49,6 @@ const Home = () => {
     }
     return () => clearInterval(interval);
   }, [loading]);
-
-  // Redirect to dashboard after report is generated
-  useEffect(() => {
-    if (report && !loading) {
-      navigate("/dashboard");
-    }
-  }, [report, loading, navigate]);
 
   useEffect(() => {
     setError(null);
@@ -81,6 +72,8 @@ const Home = () => {
         resume: resumeFile,
         selfDescription,
       });
+
+      navigate("/dashboard"); // runs after success
     } catch (err) {
       setError(
         "An error occurred while generating the report. Please try again.",
@@ -98,7 +91,7 @@ const Home = () => {
             src="/SandyLoading.lottie"
             loop
             autoplay
-            style={{ width: '200px', height: '200px' }}
+            style={{ width: "200px", height: "200px" }}
           />
           <p className="mt-4 text-white font-medium text-xl tracking-wide animate-pulse">
             {loadingText}
