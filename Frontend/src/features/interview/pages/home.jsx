@@ -52,6 +52,13 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [loading]);
 
+  // Redirect to dashboard after report is generated
+  useEffect(() => {
+    if (report && !loading) {
+      navigate("/dashboard");
+    }
+  }, [report, loading, navigate]);
+
   useEffect(() => {
     setError(null);
     getAllReports();
@@ -74,10 +81,6 @@ const Home = () => {
         resume: resumeFile,
         selfDescription,
       });
-      if (report) {
-        // Only navigate if no error
-        navigate("/dashboard");
-      }
     } catch (err) {
       setError(
         "An error occurred while generating the report. Please try again.",
