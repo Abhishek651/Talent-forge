@@ -71,7 +71,7 @@ During the development of TalentForge, several core engineering challenges were 
    ```env
    MONGO_URL=your_mongodb_connection_string
    SECRET=your_jwt_security_secret
-   # Add your OpenRouter API keys if required
+   OPENROUTER_API_KEY=your_openrouter_api_key
    ```
 4. Initialize the server:
    ```bash
@@ -88,7 +88,11 @@ During the development of TalentForge, several core engineering challenges were 
    ```bash
    npm install
    ```
-3. Initialize the client:
+3. Establish environment variables. Create a `.env` file:
+   ```env
+   VITE_BACKEND_URL=your_backend_url (e.g., http://localhost:3000)
+   ```
+4. Initialize the client:
    ```bash
    npm run dev
    ```
