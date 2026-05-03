@@ -98,8 +98,5 @@ During the development of TalentForge, several core engineering challenges were 
    ```
    *The Vite development server runs on port 5173.*
 
-## 📈 Roadmap & Future Scaling
 
-- **Pagination & Rate Limiting:** Introduce cursor-based pagination for report histories and robust API rate-limiting algorithms to prevent abuse and manage AI costs.
-- **Dynamic Session Configuration:** Allow users to manually tailor the job title, expertise level, and total question count before generating the interview environment.
-- **Report Management:** Implement secure endpoints to allow users to cleanly delete or archive past interview reports from the history dashboard.
+
