@@ -1,5 +1,5 @@
 const pdfParse = require("pdf-parse");
-const { generateInterviewReport } = require("../services/ai.service");
+const { generateInterviewReport, generateResumePdf, generatePdfFromHtml } = require("../services/ai.service");
 const interviewReportModel = require("../models/interviewReport.js");
 
 /**
@@ -43,15 +43,14 @@ async function generateInterviewReportController(req, res) {
       });
     }
 
-    // Extract text from PDF or use self-description
-    let resumeText;
+    // Keep resumeText strictly from uploaded resume only.
+    // If resume is not uploaded, leave it empty and rely on selfDescription for report generation.
+    let resumeText = "";
     if (resumeFile) {
       const resumeData = await new pdfParse.PDFParse(
         Uint8Array.from(req.file.buffer),
       ).getText();
       resumeText = resumeData.text;
-    } else {
-      resumeText = selfDescription;
     }
 
     //Call AI service to generate report
@@ -206,9 +205,78 @@ async function getLatestInterviewReportController(req, res) {
   }
 }
 
+
+/**
+ * @description to generate resume pdf based on user's resume, self-description, and job description
+ * @route POST /api/interview/resume-pdf
+ * @access Private
+ */
+
+async function generateResumePdfController(req, res) {
+  try {
+    const { interviewReportId } = req.params;
+
+    // ==============================
+    // FIND REPORT
+    // ==============================
+
+    const interviewReport = await interviewReportModel.findOne({
+      _id: interviewReportId,
+      user: req.user.userId,
+    });
+
+    if (!interviewReport) {
+      return res.status(404).json({
+        success: false,
+        message: "Interview report not found",
+      });
+    }
+
+    const {
+      jobDescription,
+      selfDescription,
+      resumeText,
+    } = interviewReport;
+
+    // ==============================
+    // GENERATE RESUME PDF
+    // ==============================
+
+    const result = await generateResumePdf({
+      resumeText,
+      selfDescription,
+      jobDescription,
+    });
+
+    // ==============================
+    // SEND PDF
+    // ==============================
+
+    res.set({
+      "Content-Type": "application/pdf",
+
+      "Content-Disposition":
+        `attachment; filename=resume_${interviewReportId}.pdf`,
+    });
+
+    return res.send(result.pdfBuffer);
+
+  } catch (error) {
+    console.error("Resume PDF Controller Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to generate resume PDF",
+      error: error.message,
+    });
+  }
+}
+
+
 module.exports = {
   generateInterviewReportController,
   getInterviewReportByIdController,
   getAllInterviewReportsController,
   getLatestInterviewReportController,
+  generateResumePdfController,
 };
