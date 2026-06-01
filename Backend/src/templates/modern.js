@@ -527,7 +527,7 @@ const sectionRenderers = {
 
 @page {
   size: A4;
-  margin: 10mm;
+  margin: 6mm;
 }
 
 /* ===================================================

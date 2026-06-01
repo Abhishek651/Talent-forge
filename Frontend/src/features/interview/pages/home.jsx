@@ -9,9 +9,12 @@ import RecentlyCreated from "../components/recentlyCreated";
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { LoadingOverlay } from "../components/loadingOverlay";
 
 const Home = () => {
   const {
+    pdfLoading,
+    setPdfLoading,
     loading,
     setLoading,
     generateReport,
@@ -24,7 +27,7 @@ const Home = () => {
   const resumeInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const loadingMessages = [
+  const generateReportMessages = [
     "Analyzing your profile...",
     "Matching skills to job description...",
     "Brainstorming technical questions...",
@@ -35,20 +38,36 @@ const Home = () => {
     "Finalizing your interview dashboard...",
     "Almost ready, just a few more seconds...",
   ];
-  const [loadingText, setLoadingText] = useState(loadingMessages[0]);
 
-  useEffect(() => {
-    let interval;
-    if (loading) {
-      let index = 0;
-      setLoadingText(loadingMessages[0]);
-      interval = setInterval(() => {
-        index = (index + 1) % loadingMessages.length;
-        setLoadingText(loadingMessages[index]);
-      }, 5500); // cycles text roughly every 5.5 seconds for 9 messages (~49s total)
-    }
-    return () => clearInterval(interval);
-  }, [loading]);
+  const pdfGenerateMessages = [
+    "Preparing your personalized resume...",
+    "Extracting key achievements from your interview report...",
+    "Aligning your experience with the target role...",
+    "Highlighting relevant skills and strengths...",
+    "Optimizing resume sections for impact...",
+    "Formatting your resume for a polished look...",
+    "Adding final improvements to the PDF...",
+    "Almost done, generating your resume file...",
+    "Your resume PDF will be ready in a moment...",
+  ];
+
+  const [loadingText, setLoadingText] = useState(generateReportMessages[0]);
+
+useEffect(() => {
+  const messages = pdfLoading ? pdfGenerateMessages : generateReportMessages;
+
+  if (!loading && !pdfLoading) return;
+
+  let index = 0;
+  setLoadingText(messages[0]);
+
+  const interval = setInterval(() => {
+    index = (index + 1) % messages.length;
+    setLoadingText(messages[index]);
+  }, 5500);// cycles text roughly every 5.5 seconds for 9 messages (~49s total)
+
+  return () => clearInterval(interval);
+}, [loading, pdfLoading]);
 
   useEffect(() => {
     setError(null);
@@ -85,19 +104,11 @@ const Home = () => {
 
   return (
     <div className="min-w-full min-h-full p-4 sm:p-6 lg:p-8 flex flex-col gap-4 sm:gap-6 lg:gap-6 bg-purple-50">
-      {loading && (
-        <div className="fixed inset-0 flex flex-col justify-center items-center z-50 bg-black/50 backdrop-blur-sm transition-all duration-300">
-          <DotLottieReact
-            src="/SandyLoading.lottie"
-            loop
-            autoplay
-            style={{ width: "200px", height: "200px" }}
-          />
-          <p className="mt-4 text-white font-medium text-xl tracking-wide animate-pulse">
-            {loadingText}
-          </p>
-        </div>
-      )}
+      <LoadingOverlay
+        visible={loading || pdfLoading}
+        text={loadingText
+        }
+      />
       <div className="text-box text-center mx-auto w-full">
         <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
           Create your <span className="text-purple-500">Interview Plan</span>

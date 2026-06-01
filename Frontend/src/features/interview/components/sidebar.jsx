@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../../auth/Hooks/useAuth";
 import RecentlyCreated from "./recentlyCreated";
+import { GeneratePdfBtn } from "./GeneratePdfBtn";
 
 // create sidebar
 const Sidebar = ({ activeTab, setActiveTab, report }) => {
@@ -11,6 +12,8 @@ const Sidebar = ({ activeTab, setActiveTab, report }) => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+  console.log("Sidebar report data:", report);
 
   // Shared base styles with text responsiveness
   const baseItemStyle =
@@ -25,8 +28,10 @@ const Sidebar = ({ activeTab, setActiveTab, report }) => {
   return (
     <div className="sidebar flex flex-col gap-2 py-4 h-full">
       <h1 className="text-lg xl:text-xl font-bold mt-2 text-center">
-          <span className="text-purple-900 mb-4 block">{report?.data?.jobTitle || "Unavailable"}</span>
-        </h1>
+        <span className="text-purple-900 mb-4 block">
+          {report?.data?.jobTitle || "Unavailable"}
+        </span>
+      </h1>
       <div className="options">
         <div
           onClick={() => handleTabClick("technicalQuestions")}
@@ -57,6 +62,27 @@ const Sidebar = ({ activeTab, setActiveTab, report }) => {
         <Link to="/reports" className="font-bold">
           View All Reports
         </Link>
+      </div>
+
+      <div className="border-t px-2 py-3">
+        <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 via-white to-indigo-50 p-4 shadow-sm transition-all duration-200 hover:shadow-md">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-purple-600">
+            AI Resume Export
+          </p>
+
+          <h4 className="mt-2 text-sm font-bold text-gray-900">
+            Get a personalized resume for this job
+          </h4>
+
+          <p className="mt-1 text-xs leading-5 text-gray-600">
+            Tailored from your current interview report for a stronger
+            application.
+          </p>
+
+          <div className="mt-4">
+            <GeneratePdfBtn interviewReportId={report?.data?._id} />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -219,128 +219,127 @@ async function generateInterviewReport({
   return JSON.parse(responseString);
 }
 
-
 // ==============================
 // RESUME SCHEMA
 // ==============================
 
 const resumeSchema = z.object({
-
   name: z.string().default(""),
 
   title: z.string().optional().default(""),
 
-  contact: z.object({
-    email: z.string().optional().default(""),
-    phone: z.string().optional().default(""),
-    location: z.string().optional().default(""),
-    linkedin: z.string().optional().default(""),
-    github: z.string().optional().default(""),
-  }).optional().default({}),
-
-  summary: z.string()
+  contact: z
+    .object({
+      email: z.string().optional().default(""),
+      phone: z.string().optional().default(""),
+      location: z.string().optional().default(""),
+      linkedin: z.string().optional().default(""),
+      github: z.string().optional().default(""),
+    })
     .optional()
-    .default(""),
+    .default({}),
 
-  skills: z.array(
-    z.object({
-      category: z.string().default(""),
-      items: z.array(z.string()).default([]),
-    })
-  )
-  .optional()
-  .default([]),
+  summary: z.string().optional().default(""),
 
-  experience: z.array(
-    z.object({
-      role: z.string().default(""),
-      company: z.string().default(""),
-      duration: z.string().default(""),
-      points: z.array(z.string()).default([]),
-    })
-  )
-  .optional()
-  .default([]),
-
-  internships: z.array(
-    z.object({
-      role: z.string().default(""),
-      company: z.string().default(""),
-      duration: z.string().default(""),
-      points: z.array(z.string()).default([]),
-    })
-  )
-  .optional()
-  .default([]),
-
-  projects: z.array(
-    z.object({
-      name: z.string().default(""),
-      points: z.array(z.string()).default([]),
-    })
-  )
-  .optional()
-  .default([]),
-
-  education: z.array(
-    z.object({
-      degree: z.string().default(""),
-      institute: z.string().default(""),
-      duration: z.string().default(""),
-    })
-  )
-  .optional()
-  .default([]),
-
-  certifications: z.array(
-    z.object({
-      title: z.string().default(""),
-      description: z.string().default(""),
-    })
-  )
-  .optional()
-  .default([]),
-
-  achievements: z.array(z.string())
+  skills: z
+    .array(
+      z.object({
+        category: z.string().default(""),
+        items: z.array(z.string()).default([]),
+      }),
+    )
     .optional()
     .default([]),
 
-  activities: z.array(z.string())
+  experience: z
+    .array(
+      z.object({
+        role: z.string().default(""),
+        company: z.string().default(""),
+        duration: z.string().default(""),
+        points: z.array(z.string()).default([]),
+      }),
+    )
     .optional()
     .default([]),
 
-  publications: z.array(
-    z.object({
-      title: z.string().default(""),
-      publisher: z.string().default(""),
-      year: z.string().default(""),
-    })
-  )
-  .optional()
-  .default([]),
+  internships: z
+    .array(
+      z.object({
+        role: z.string().default(""),
+        company: z.string().default(""),
+        duration: z.string().default(""),
+        points: z.array(z.string()).default([]),
+      }),
+    )
+    .optional()
+    .default([]),
 
-  volunteerWork: z.array(
-    z.object({
-      role: z.string().default(""),
-      organization: z.string().default(""),
-      description: z.string().default(""),
-    })
-  )
-  .optional()
-  .default([]),
+  projects: z
+    .array(
+      z.object({
+        name: z.string().default(""),
+        points: z.array(z.string()).default([]),
+      }),
+    )
+    .optional()
+    .default([]),
 
-  positionsOfResponsibility: z.array(
-    z.object({
-      position: z.string().default(""),
-      organization: z.string().default(""),
-    })
-  )
-  .optional()
-  .default([]),
+  education: z
+    .array(
+      z.object({
+        degree: z.string().default(""),
+        institute: z.string().default(""),
+        duration: z.string().default(""),
+      }),
+    )
+    .optional()
+    .default([]),
 
+  certifications: z
+    .array(
+      z.object({
+        title: z.string().default(""),
+        description: z.string().default(""),
+      }),
+    )
+    .optional()
+    .default([]),
+
+  achievements: z.array(z.string()).optional().default([]),
+
+  publications: z
+    .array(
+      z.object({
+        title: z.string().default(""),
+        publisher: z.string().default(""),
+        year: z.string().default(""),
+      }),
+    )
+    .optional()
+    .default([]),
+
+  volunteerWork: z
+    .array(
+      z.object({
+        role: z.string().default(""),
+        organization: z.string().default(""),
+        description: z.string().default(""),
+      }),
+    )
+    .optional()
+    .default([]),
+
+  positionsOfResponsibility: z
+    .array(
+      z.object({
+        position: z.string().default(""),
+        organization: z.string().default(""),
+      }),
+    )
+    .optional()
+    .default([]),
 });
-
-
 
 // ==============================
 // GENERATE RESUME DATA
@@ -511,7 +510,6 @@ projects
 education
 certifications
 achievements
-activities
 publications
 volunteerWork
 positionsOfResponsibility
@@ -523,7 +521,6 @@ projects
 education
 certifications
 achievements
-activities
 
 For experienced professionals prioritize:
 summary
@@ -628,11 +625,6 @@ expected JSON format:
     "Achievement 2"
   ],
 
-  "activities": [
-    "Activity 1",
-    "Activity 2"
-  ],
-
   "publications": [
     {
       "title": "Publication Title",
@@ -718,7 +710,7 @@ The sectionOrder array must contain only the sections present in the generated r
 // ==============================
 // GENERATE HTML
 // ==============================
- function generateResumeHTML(resumeData) {
+function generateResumeHTML(resumeData) {
   try {
     return modernResumeTemplate(resumeData);
   } catch (error) {
@@ -738,10 +730,7 @@ async function generatePdfFromHtml(html) {
     browser = await puppeteer.launch({
       headless: true,
 
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-      ],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const page = await browser.newPage();
@@ -758,7 +747,7 @@ async function generatePdfFromHtml(html) {
       preferCSSPageSize: true,
 
       margin: {
-        top: "12px",
+        top: "6px",
         right: "12px",
         bottom: "12px",
         left: "12px",
@@ -813,9 +802,7 @@ async function generateResumePdf({
   }
 }
 
-
-
 module.exports = {
   generateInterviewReport,
-  generateResumePdf
+  generateResumePdf,
 };

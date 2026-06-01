@@ -2,6 +2,7 @@ import React from "react";
 import { useInterview } from "../hooks/useInterview";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
+import { DeleteInterviewBtn } from "./deleteBtn";
 
 const RecentlyCreated = () => {
   const { reportList, getReportById } = useInterview();
@@ -36,6 +37,7 @@ const RecentlyCreated = () => {
               >
                 View Report
               </Button>
+              <DeleteInterviewBtn interviewId={report._id} />
             </div>
           ))
         )}
