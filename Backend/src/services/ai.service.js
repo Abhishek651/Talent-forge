@@ -2,8 +2,7 @@ const { OpenRouter } = require("@openrouter/sdk");
 const { z } = require("zod");
 const { zodToJsonSchema } = require("zod-to-json-schema");
 
-const puppeteer = require("puppeteer");
-const { modernResumeTemplate } = require("../templates/modern.js");
+
 
 // Creates connection to OpenRouter AI
 const openRouterAI = new OpenRouter({
@@ -1058,64 +1057,6 @@ The sectionOrder array must contain only the sections present in the generated r
 }
 
 // ==============================
-// GENERATE HTML
-// ==============================
-function generateResumeHTML(resumeData) {
-  try {
-    return modernResumeTemplate(resumeData);
-  } catch (error) {
-    console.error("HTML Generation Error:", error);
-    throw new Error("Failed to generate resume HTML");
-  }
-}
-
-// ==============================
-// GENERATE PDF
-// ==============================
-
-async function generatePdfFromHtml(html) {
-  let browser;
-
-  try {
-    browser = await puppeteer.launch({
-      headless: true,
-
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-
-    const page = await browser.newPage();
-
-    await page.setContent(html, {
-      waitUntil: "networkidle0",
-    });
-
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-
-      printBackground: true,
-
-      preferCSSPageSize: true,
-
-      margin: {
-        top: "6px",
-        right: "12px",
-        bottom: "12px",
-        left: "12px",
-      },
-    });
-
-    return pdfBuffer;
-  } catch (error) {
-    console.error("PDF Generation Error:", error);
-    throw new Error("Failed to generate PDF");
-  } finally {
-    if (browser) {
-      await browser.close();
-    }
-  }
-}
-
-// ==============================
 // COMPLETE PIPELINE
 // ==============================
 
@@ -1123,38 +1064,21 @@ async function generateResumePdf({
   resumeText,
   selfDescription,
   jobDescription,
-  mode = "specific"
+  mode = "specific",
 }) {
   try {
-    // 1. Generate Structured Resume Data
     const resumeData = await generateResumeData({
       resumeText,
       selfDescription,
       jobDescription,
-      mode
+      mode,
     });
     console.log("Generated Resume Data:", resumeData);
-
-    // 2. Generate HTML From Template
-    const html = generateResumeHTML(resumeData);
-
-    // 3. Generate PDF
-    const pdfBuffer = await generatePdfFromHtml(html);
-
-    return {
-      success: true,
-      html,
-      pdfBuffer,
-      resumeData,
-    };
+    return { success: true, resumeData };
   } catch (error) {
     console.error("Resume Pipeline Error:", error);
-
     throw new Error("Resume PDF generation failed");
   }
 }
 
-module.exports = {
-  generateInterviewReport,
-  generateResumePdf,
-};
+module.exports = { generateInterviewReport, generateResumePdf };

@@ -10,6 +10,8 @@ import {
 import { useContext } from "react";
 import { InterviewContext } from "../interview.context";
 import { toast } from "sonner";
+import { pdf } from "@react-pdf/renderer";
+import { ModernTemplate } from "../templates/ModernTemplate";
 
 export const useInterview = () => {
   const context = useContext(InterviewContext);
@@ -93,22 +95,20 @@ const { loading, setLoading, pdfLoading, setPdfLoading, report, setReport, repor
   };
 
   const fetchResumePdf = async (interviewId) => {
-    // console.log("Fetching resume PDF for interview ID:", interviewId);
     setPdfLoading(true);
-    setError(""); // clear any previous error before starting
+    setError("");
     try {
-      const pdfData = await generateResumePdf(interviewId);
-      // clear error on success to avoid stale error state
-      setError("");
-      const url = window.URL.createObjectURL(new Blob([pdfData], { type: 'application/pdf' }));
-      const link = document.createElement('a');
+      const response = await generateResumePdf(interviewId);
+      const blob = await pdf(<ModernTemplate data={response.data} />).toBlob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
       link.href = url;
       link.download = "resume.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
-       toast.success("Resume PDF downloaded successfully!");
+      setError("");
+      toast.success("Resume PDF downloaded successfully!");
     } catch (error) {
       console.error("Error generating resume PDF:", error);
       setError("An error occurred while generating the resume PDF. Please try again.");
@@ -133,9 +133,10 @@ const { loading, setLoading, pdfLoading, setPdfLoading, report, setReport, repor
   const generateMyResume = async (selfDescription) => {
     setPdfLoading(true);
     try {
-      const pdfData = await generateMyResumePdf(selfDescription);
-      const url = window.URL.createObjectURL(new Blob([pdfData], { type: 'application/pdf' }));
-      const link = document.createElement('a');
+      const response = await generateMyResumePdf(selfDescription);
+      const blob = await pdf(<ModernTemplate data={response.data} />).toBlob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
       link.href = url;
       link.download = "resume.pdf";
       document.body.appendChild(link);

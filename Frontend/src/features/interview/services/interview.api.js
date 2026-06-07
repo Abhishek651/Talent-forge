@@ -68,27 +68,8 @@ export const getLatestInterviewReport = async (userId) => {
  * @param {string} resumeId - The ID of the resume to generate as PDF
  */
 export const generateResumePdf = async (interviewReportId) => {
-  console.log(
-    "Generating resume PDF for interview report ID:",
-    interviewReportId,
-  );
-  const response = await api.post(
-    `/interview/report/resume-pdf/${interviewReportId}`,
-    {}, // request body (empty)
-    { responseType: "blob" }, // axios config
-  );
+  const response = await api.post(`/interview/report/resume-pdf/${interviewReportId}`);
   return response.data;
-
-//   Axios expects (url, data, config). Passing responseType as the second argument 
-// sends it as request JSON and the request is malformed. The server likely ignores 
-// the invalid JSON body and processes the request, but it doesn't return the PDF as expected. 
-// By moving responseType to the third argument, we ensure it's treated as axios config and the request is properly formed.
-
-// otherwise gives error
-// installHook.js:1 Error generating resume PDF: AxiosError: Network Error
-//     at async generateResumePdf (interview.api.js:71:22)
-//     at async fetchResumePdf (useInterview.js:90:23)
-
 };
 
 /**
@@ -107,11 +88,6 @@ export const deleteInterviewReport = async (reportId) => {
  * @param {Object} selfDescription - The self-description data to generate the resume PDF
  */
 export const generateMyResumePdf = async (selfDescription) => {
-  // console.log("Generating resume PDF for self-description:", selfDescription);
-  const response = await api.post(
-    `/my-resume/pdf`,
-    {selfDescription},
-    { responseType: "blob" }
-  );
+  const response = await api.post(`/my-resume/pdf`, { selfDescription });
   return response.data;
 };

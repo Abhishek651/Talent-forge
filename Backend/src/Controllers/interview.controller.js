@@ -248,18 +248,7 @@ async function generateResumePdfController(req, res) {
       jobDescription,
     });
 
-    // ==============================
-    // SEND PDF
-    // ==============================
-
-    res.set({
-      "Content-Type": "application/pdf",
-
-      "Content-Disposition":
-        `attachment; filename=resume_${interviewReportId}.pdf`,
-    });
-
-    return res.send(result.pdfBuffer);
+    return res.status(200).json({ success: true, data: result.resumeData });
 
   } catch (error) {
     console.error("Resume PDF Controller Error:", error);

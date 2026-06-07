@@ -16,23 +16,14 @@ async function generateMyResumePdfController(req, res) {
       });
     }
 
-    // Pass empty strings for resumeText and jobDescription to stay consistent 
-    // with what the AI service likely expects.
-    const resumePdf = await generateResumePdf({ 
-      selfDescription, 
-      resumeText: "", 
+    const resumePdf = await generateResumePdf({
+      selfDescription,
+      resumeText: "",
       jobDescription: "",
-      mode: "generic"
+      mode: "generic",
     });
 
-    res.set({
-      "Content-Type": "application/pdf",
-
-      "Content-Disposition":
-        `attachment; filename=resume.pdf`,
-    });
-
-    return res.send(resumePdf.pdfBuffer);
+    return res.status(200).json({ success: true, data: resumePdf.resumeData });
   } catch (error) {
     console.error("Error generating resume PDF:", error);
     return res.status(500).json({
