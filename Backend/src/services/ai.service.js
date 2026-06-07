@@ -1011,7 +1011,7 @@ The sectionOrder array must contain only the sections present in the generated r
   try {
     const stream = await openRouterAI.chat.send({
       chatRequest: {
-        model: process.env.MODEL,
+        model: process.env.Model,
 
         messages: [
           {

@@ -47,10 +47,8 @@ async function generateInterviewReportController(req, res) {
     // If resume is not uploaded, leave it empty and rely on selfDescription for report generation.
     let resumeText = "";
     if (resumeFile) {
-      const resumeData = await new pdfParse.PDFParse(
-        Uint8Array.from(req.file.buffer),
-      ).getText();
-      resumeText = resumeData.text;
+      const parsedPdf = await pdfParse(req.file.buffer);
+      resumeText = parsedPdf.text;
     }
 
     //Call AI service to generate report
@@ -119,6 +117,7 @@ async function generateInterviewReportController(req, res) {
       selfDescription,
       jobDescription,
       ...interviewReportByAi, // spread AI-generated fields
+      ...parsedReport, // spread AI-generated fields
     });
 
     // Send success response
@@ -214,14 +213,14 @@ async function getLatestInterviewReportController(req, res) {
 
 async function generateResumePdfController(req, res) {
   try {
-    const { interviewReportId } = req.params;
+    const reportId = req.params.interviewReportId || req.params.reportId;
 
     // ==============================
     // FIND REPORT
     // ==============================
 
     const interviewReport = await interviewReportModel.findOne({
-      _id: interviewReportId,
+      _id: reportId,
       user: req.user.userId,
     });
 
@@ -252,6 +251,16 @@ async function generateResumePdfController(req, res) {
 
   } catch (error) {
     console.error("Resume PDF Controller Error:", error);
+
+    if (
+      error.statusCode === 503 ||
+      error.message.includes("Service Unavailable")
+    ) {
+      return res.status(503).json({
+        success: false,
+        message: "AI Service is temporarily unavailable. Please try again in a few minutes.",
+      });
+    }
 
     return res.status(500).json({
       success: false,
