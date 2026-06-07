@@ -527,7 +527,7 @@ const sectionRenderers = {
 
 @page {
   size: A4;
-  margin: 6mm;
+  margin: 10mm;
 }
 
 /* ===================================================
@@ -545,10 +545,10 @@ const sectionRenderers = {
 =================================================== */
 
 body {
-  font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   font-size: 14px;
-  line-height: 1.45;
-  color: #222;
+  line-height: 1.5;
+  color: #333;
   background: #fff;
 }
 
@@ -574,19 +574,19 @@ body {
   font-weight: 700;
   color: #111;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   margin-bottom: 4px;
 }
 
 .title {
   font-size: 15px;
-  color: #444;
+  color: #555;
   margin-bottom: 4px;
 }
 
 .contact {
   font-size: 11px;
-  color: #555;
+  color: #666;
   line-height: 1.5;
 }
 
@@ -600,16 +600,16 @@ body {
 =================================================== */
 
 .section {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 .section-title {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700;
   color: #1f4e79;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1.5px solid #d9d9d9;
   padding-bottom: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-transform: uppercase;
 }
 
@@ -618,7 +618,7 @@ body {
 =================================================== */
 
 .summary {
-  text-align: justify;
+  text-align: left;
 }
 
 /* ===================================================
@@ -630,7 +630,7 @@ body {
 }
 
 .skills-list li {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 .skills-category {
@@ -650,15 +650,15 @@ body {
 
 .education-duration {
   white-space: nowrap;
-  font-size: 12px;
-  color: #666;
+  font-size: 13px;
+  color: #777;
 }
 
 .education-item,
 .experience-item,
 .project,
 .certification-item {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 /* ===================================================
@@ -684,7 +684,7 @@ ul {
 }
 
 li {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 /* ===================================================

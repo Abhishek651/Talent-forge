@@ -13,7 +13,7 @@ const Sidebar = ({ activeTab, setActiveTab, report }) => {
     setActiveTab(tab);
   };
 
-  console.log("Sidebar report data:", report);
+  // console.log("Sidebar report data:", report);
 
   // Shared base styles with text responsiveness
   const baseItemStyle =

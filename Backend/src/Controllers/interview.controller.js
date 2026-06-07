@@ -1,5 +1,5 @@
 const pdfParse = require("pdf-parse");
-const { generateInterviewReport, generateResumePdf, generatePdfFromHtml } = require("../services/ai.service");
+const { generateInterviewReport, generateResumePdf} = require("../services/ai.service");
 const interviewReportModel = require("../models/interviewReport.js");
 
 /**
@@ -124,7 +124,7 @@ async function generateInterviewReportController(req, res) {
     // Send success response
     return res.status(201).json({
       message: "Interview report generated successfully",
-      data: interviewReportByAi,
+      data: interviewReport,
     });
   } catch (err) {
     // Handle unexpected errors (AI failure, DB issues, parsing issues)

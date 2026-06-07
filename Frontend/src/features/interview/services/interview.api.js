@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/interview/`,
+  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/`,
   withCredentials: true,
 });
 
@@ -21,7 +21,7 @@ export const generateInterviewReport = async ({
   formData.append("selfDescription", selfDescription);
   formData.append("resume", resume);
 
-  const response = await api.post("/report", formData, {
+  const response = await api.post("/interview/report", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -38,7 +38,7 @@ export const generateInterviewReport = async ({
  */
 
 export const getInterviewReportById = async (reportId) => {
-  const response = await api.get(`/report/${reportId}`);
+  const response = await api.get(`/interview/report/${reportId}`);
   return response.data;
 };
 
@@ -48,7 +48,7 @@ export const getInterviewReportById = async (reportId) => {
  * @returns {Promise<Array>} - An array of interview reports for the authenticated user
  */
 export const getAllInterviewReports = async () => {
-  const response = await api.get("/report");
+  const response = await api.get("/interview/report");
   return response.data;
 };
 
@@ -58,7 +58,7 @@ export const getAllInterviewReports = async () => {
  * @param {string} userId - The ID of the user whose latest interview report to retrieve
  */
 export const getLatestInterviewReport = async (userId) => {
-  const response = await api.get(`/report/latest/${userId}`);
+  const response = await api.get(`/interview/report/latest/${userId}`);
   return response.data;
 };
 
@@ -73,7 +73,7 @@ export const generateResumePdf = async (interviewReportId) => {
     interviewReportId,
   );
   const response = await api.post(
-    `/report/resume-pdf/${interviewReportId}`,
+    `/interview/report/resume-pdf/${interviewReportId}`,
     {}, // request body (empty)
     { responseType: "blob" }, // axios config
   );
@@ -97,5 +97,21 @@ export const generateResumePdf = async (interviewReportId) => {
  * @param {string} reportId - The ID of the interview report to delete
  */
 export const deleteInterviewReport = async (reportId) => {
-  await api.delete(`/report/${reportId}`);
+  await api.delete(`/interview/report/${reportId}`);
+};
+
+
+/**
+ * @function generate a new PDF for my resume
+ * @description Generate a PDF version of the user's resume based on self-description
+ * @param {Object} selfDescription - The self-description data to generate the resume PDF
+ */
+export const generateMyResumePdf = async (selfDescription) => {
+  // console.log("Generating resume PDF for self-description:", selfDescription);
+  const response = await api.post(
+    `/my-resume/pdf`,
+    {selfDescription},
+    { responseType: "blob" }
+  );
+  return response.data;
 };

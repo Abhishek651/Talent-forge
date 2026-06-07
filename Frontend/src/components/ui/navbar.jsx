@@ -50,6 +50,9 @@ function Navbar() {
                       <Link to="/reports">All Reports</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
+                      <Link to="/my-resume">New Resume</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
                       <button className="w-full text-left" onClick={logout}>
                         Logout
                       </button>
@@ -67,6 +70,7 @@ function Navbar() {
                   Create New Interview Report
                 </Link>
                 <Link to='/dashboard' className="px-4 py-2 font-semibold">Dashboard</Link>
+                <Link to='/my-resume' className="px-4 py-2 font-semibold">New Resume</Link>
                 <Button variant="outline" onClick={logout}>
                   Logout
                 </Button>

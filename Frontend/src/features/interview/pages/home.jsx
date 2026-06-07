@@ -10,6 +10,7 @@ import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { LoadingOverlay } from "../components/loadingOverlay";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const {
@@ -137,7 +138,11 @@ useEffect(() => {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-
+          <p className="text-md text-center text-gray-600 col-span-full mt-2">
+            Don't have a resume? No worries! Just provide a self-description of
+            your skills and experience, and we'll generate a personalized
+            Resume for you. <Link className="underline font-bold" to="/my-resume">click here!</Link>
+          </p>
           <Button type="submit" className="col-span-full">
             Submit
           </Button>

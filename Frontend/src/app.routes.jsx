@@ -7,6 +7,7 @@ import Dashboard from './features/interview/pages/dashboard';
 import Navbar from './components/ui/navbar'; 
 import Footer from './components/ui/footer';
 import ReportList from './features/interview/pages/reportList';
+import MyResume from './features/interview/pages/myResume';
 
 // Create a layout component that includes the Navbar and the Outlet
 const RootLayout = () => {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
             {
                 path: '/reports',
                 element: <Protected><ReportList /></Protected> // Placeholder, replace with actual AllReports component when ready
+            },
+            {
+              path: '/my-resume',
+              element:  <Protected><MyResume /></Protected>
             }
         ]
     }

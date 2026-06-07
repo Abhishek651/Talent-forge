@@ -4,7 +4,8 @@ import {
   generateInterviewReport,
   getLatestInterviewReport,
   generateResumePdf,
-  deleteInterviewReport
+  deleteInterviewReport,
+  generateMyResumePdf
 } from "../services/interview.api";
 import { useContext } from "react";
 import { InterviewContext } from "../interview.context";
@@ -128,6 +129,27 @@ const { loading, setLoading, pdfLoading, setPdfLoading, report, setReport, repor
     }
   };
 
+
+  const generateMyResume = async (selfDescription) => {
+    setPdfLoading(true);
+    try {
+      const pdfData = await generateMyResumePdf(selfDescription);
+      const url = window.URL.createObjectURL(new Blob([pdfData], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "resume.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Resume PDF generated and downloaded successfully!");
+    } catch (error) {
+      console.error("Error generating my resume PDF:", error);
+      toast.error("Failed to generate resume PDF. Please try again.");
+      setError("An error occurred while generating the resume PDF. Please try again.");
+    } finally {
+      setPdfLoading(false);
+    }
+  };
   return {
     loading,
     setLoading,
@@ -142,6 +164,7 @@ const { loading, setLoading, pdfLoading, setPdfLoading, report, setReport, repor
     getAllReports,
     getLatestReport,
     fetchResumePdf,
-    deleteReport
+    deleteReport,
+    generateMyResume
   };
 };

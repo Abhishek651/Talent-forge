@@ -20,6 +20,9 @@ app.use('/api/auth', authRouter)
 const interviewRouter = require('./routes/interview.routes')
 app.use('/api/interview', interviewRouter)
 
+const myResumeRouter = require('./routes/myResume.routes')
+app.use('/api/my-resume', myResumeRouter)
+
 
 
 

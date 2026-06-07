@@ -27,6 +27,7 @@ Architected with an emphasis on performance, security, and user experience, this
 - **Stateful Interactive UI:** Orchestrated a responsive, component-driven frontend using React, paired with Shadcn UI and Tailwind CSS. Managed complex application state across nested conversational interfaces.
 - **Performance-Optimized Data Layer:** Designed a normalized MongoDB schema using Mongoose to persist historical interview reports, user profiles, and active session states efficiently.
 - **Fluid User Experience:** Implemented dynamic routing, protected component wrappers, and non-blocking Lottie animations (`@lottiefiles`) to ensure a polished, professional-grade interface.
+ - **Resume PDF Export:** Client-side resume and report export to a polished, downloadable PDF directly from the interview/report UI (preserves styling and highlights).
 
 ## 💻 Technical Stack
 
@@ -50,6 +51,7 @@ During the development of TalentForge, several core engineering challenges were 
 2. **Secure Session Maintenance:** Migrated from `localStorage` tokens to `httpOnly` secure cookies. Implemented token blacklisting on logout to prevent replay attacks and secure user sessions against XSS vulnerabilities.
 3. **Graceful Degradation with External APIs:** The AI inference layer occasionally suffers from timeouts or high latency (`Service Unavailable`). Implemented resilient error handling and UI fallback boundaries to maintain application stability without degrading the user experience.
 4. **Data Validation Integrity:** Enforced strict data contracts between the client and server using `Zod`, drastically reducing runtime errors and ensuring malformed data never hits the database or AI prompt execution.
+5. **Client-side PDF Generation:** Implemented PDF export in the frontend to preserve layout and reduce backend load. Learned trade-offs around print CSS, pagination, and asset inlining; considered using Puppeteer for server-side rendering when precise control or very large PDFs are required.
 
 ## ⚙️ Local Environment Setup
 
