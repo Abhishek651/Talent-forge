@@ -9,17 +9,22 @@ const Login = () => {
   const { handleLogin, loading } = useAuth();
 
   let [user, setUser] = useState({});
+  const [error, setError] = useState("");
 
   function handleInput(e) {
     const value = e.target.value;
     setUser((c) => ({ ...c, [e.target.name]: value }));
+    setError("");
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // console.log("Form Submitted: ", user);
-    await handleLogin({ email: user.email, password: user.password });
-    navigate('/');
+    try {
+      await handleLogin({ email: user.email, password: user.password });
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid email or password");
+    }
   }
 
   return (
@@ -67,6 +72,10 @@ const Login = () => {
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
             />
           </div>
+
+          {error && (
+            <p className="text-red-400 text-sm -mt-2">{error}</p>
+          )}
 
           <Button type="submit" disabled={loading} className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors">
             Submit

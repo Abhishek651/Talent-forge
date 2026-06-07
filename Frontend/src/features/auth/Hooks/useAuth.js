@@ -35,10 +35,11 @@ export const useAuth = () => {
         setLoading(true); // show loading UI
 
         try {
-            const data = await login({ email, password }); // API call
+            const data = await login({ email, password });
             setUser(data.user); 
         } catch (err) {
-            console.log(err)
+            console.log(err);
+            throw err;
         } finally {
             setLoading(false); // stop loading
         }
