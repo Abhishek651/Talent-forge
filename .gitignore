@@ -92,6 +92,7 @@ temp/
 *.njsproj
 *.sln
 *.sw?
+.vscode/
 
 # OS generated files
 Thumbs.db
