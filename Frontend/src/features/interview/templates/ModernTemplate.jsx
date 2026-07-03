@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     color: "#333333",
     backgroundColor: "#ffffff",
-    paddingTop: 28,
+    paddingTop: 24,
     paddingBottom: 34,
     paddingLeft: 34,
     paddingRight: 34,
@@ -27,15 +27,15 @@ const styles = StyleSheet.create({
   contact: { fontSize: 8, color: "#666666", lineHeight: 1.5 },
 
   // SECTION
-  section: { marginTop: 10 },
+  section: { marginTop: 3 },
   sectionTitle: {
     fontSize: 8.5,
     fontFamily: "Helvetica-Bold",
     color: "#1f4e79",
     borderBottomWidth: 1.5,
     borderBottomColor: "#d9d9d9",
-    paddingBottom: 3,
-    marginBottom: 5,
+    paddingBottom: 0,
+    marginBottom: 3,
     textTransform: "uppercase",
   },
 
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   bold: { fontFamily: "Helvetica-Bold" },
 
   // ITEMS
-  item: { marginBottom: 5 },
+  item: { marginBottom: 2 },
 
   // LISTS
   listItem: { flexDirection: "row", marginBottom: 2, paddingLeft: 10 },
