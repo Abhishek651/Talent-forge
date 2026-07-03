@@ -211,6 +211,7 @@ const MyResume = () => {
       setError(
         "An error occurred while generating the resume. Please try again.",
       );
+      toast.error("Failed to generate resume PDF. Please try again.");
     } finally {
       setLoading(false);
     }
