@@ -36,6 +36,7 @@ async function openRouterService(prompt) {
       }
     }
     console.log(responseString);
+    return responseString;
   } catch (error) {
     console.error("Resume Generation Error:", error);
     throw new Error("Failed to generate resume data");
