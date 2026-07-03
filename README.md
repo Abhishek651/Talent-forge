@@ -29,6 +29,7 @@ Architected with an emphasis on performance, security, and user experience, this
 - **Fluid User Experience:** Implemented dynamic routing, protected component wrappers, and non-blocking Lottie animations (`@lottiefiles`) to ensure a polished, professional-grade interface.
  - **Resume PDF Export:** Client-side resume and report export to a polished, downloadable PDF directly from the interview/report UI, rendered entirely in the browser via `@react-pdf/renderer` (no server-side browser dependency).
  - **AI-Powered Resume Builder:** Multi-step form that collects structured candidate data and feeds it to the AI to generate an ATS-optimized, professional resume, exported as a downloadable PDF client-side.
+ - **Persistent Candidate Profile:** Users fill out their profile once (name, contact, experience, education, skills, projects, certifications) and save it to MongoDB. The saved profile is then reusable across the Resume Builder and Interview Report generator — a single toggle auto-populates all fields, eliminating repetitive data entry for every new job application.
 
 ## 💻 Technical Stack
 
@@ -54,6 +55,7 @@ During the development of TalentForge, several core engineering challenges were 
 3. **Graceful Degradation with External APIs:** The AI inference layer occasionally suffers from timeouts or high latency (`Service Unavailable`). Implemented resilient error handling and UI fallback boundaries to maintain application stability without degrading the user experience.
 4. **Data Validation Integrity:** Enforced strict data contracts between the client and server using `Zod`, drastically reducing runtime errors and ensuring malformed data never hits the database or AI prompt execution.
 5. **Client-side PDF Generation:** Implemented PDF rendering entirely on the frontend using `@react-pdf/renderer`, eliminating the Puppeteer dependency from the backend. The backend AI service returns structured JSON resume data, which the frontend renders into a styled, downloadable PDF in the browser — reducing server load and resolving deployment failures on cloud environments like Render.
+6. **Profile-Driven Workflow:** Engineered a persistent candidate profile system backed by a `ResumeDetails` MongoDB model with upsert semantics (one document per user). The profile data flows directly into both the interview report generator and the resume builder via a "Use saved profile" toggle, removing the need to re-enter candidate data for each job application.
 
 ## ⚙️ Local Environment Setup
 
