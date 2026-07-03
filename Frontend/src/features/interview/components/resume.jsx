@@ -3,7 +3,7 @@ import { UserRound } from "lucide-react";
 import { FileUp } from "lucide-react";
 import { Input } from "@/components/ui/input"
 
-const Resume = ({ resumeRef }) => {
+const Resume = ({ resumeRef,disabled }) => {
 
   return (
     <div className="profile shrink-0">
@@ -17,7 +17,7 @@ const Resume = ({ resumeRef }) => {
         </div>
         <h4 className="font-medium text-slate-800 text-base md:text-base lg:text-lg">Upload your resume</h4>
         <p className="text-xs sm:text-sm text-gray-600">PDF upto 5MB</p>
-        <Input id="resume" type="file" className="bg-purple-100 w-32 sm:w-40 md:w-48 lg:w-60 h-10 sm:h-12 text-sm sm:text-base lg:text-lg" ref={resumeRef} />
+        <Input disabled={disabled} id="resume" type="file" className="bg-purple-100 w-32 sm:w-40 md:w-48 lg:w-60 h-10 sm:h-12 text-sm sm:text-base lg:text-lg" ref={resumeRef} />
 
       </div>
     </div>

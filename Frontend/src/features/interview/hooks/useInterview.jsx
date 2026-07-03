@@ -38,9 +38,13 @@ const { loading, setLoading, pdfLoading, setPdfLoading, report, setReport, repor
     } catch (error) {
       console.error("Error generating interview report:", error);
       if (error.response?.status === 503 || error.message?.includes("Service Unavailable")) {
-        setError("AI service is temporarily unavailable. Please try again in a few minutes.");
+        const msg = 'AI service is temporarily unavailable. Please try again in a few minutes.';
+        setError(msg);
+        throw new Error(msg)
       } else {
-        setError("An error occurred while generating the report. Please try again.");
+        const msg = "An error occurred while generating the report. Please try again.";
+        setError(msg);
+        throw new Error(msg);
       }
     } finally {
       setLoading(false);

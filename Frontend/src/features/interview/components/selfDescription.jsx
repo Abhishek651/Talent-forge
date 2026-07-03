@@ -1,7 +1,7 @@
 import React from "react";
 import { Textarea } from "@/components/ui/textarea";
 
-const SelfDescription = ({ selfDec, setSelfDec }) => {
+const SelfDescription = ({ selfDec, setSelfDec,disabled }) => {
 
     async function handleInput(e){
         await setSelfDec(e.target.value);
@@ -14,6 +14,7 @@ const SelfDescription = ({ selfDec, setSelfDec }) => {
         <span className="text-sm mx-2">(Optional)</span>
       </h2>
       <Textarea
+      disabled={disabled}
         value={selfDec}
         onChange={handleInput}
         className="flex-1 w-full rounded-2xl p-4 sm:p-6 resize-none text-sm md:text-base lg:text-lg"

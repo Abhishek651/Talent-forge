@@ -1,46 +1,15 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useInterview } from "../hooks/useInterview";
 import TagInput from "../components/tagInput";
 import { Badge } from "@/components/ui/badge";
-import { LoadingOverlay } from "../components/loadingOverlay";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { getResumeDetails } from "../services/profile.api";
+import { getResumeDetails, submitResumeDetails } from "../services/profile.api";
+import { toast } from "sonner";
 
-// Multi-step form to collect structured self-description and POST to backend
-const MyResume = () => {
-  const { generateMyResume } = useInterview();
+const Profile = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [loadingText, setLoadingText] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
-
-  const generateResumeMessages = [
-    "Reading your profile...",
-    "Structuring your experience...",
-    "Optimizing for ATS keywords...",
-    "Crafting your professional summary...",
-    "Formatting skills and projects...",
-    "Applying resume best practices...",
-    "Generating your PDF layout...",
-    "Rendering the final document...",
-    "Almost done, polishing the details...",
-  ];
-
-  useEffect(() => {
-    if (!loading) return; // if loading is false, don't run the function
-    let index = 0;
-    setLoadingText(generateResumeMessages[0]);
-
-    const interval = setInterval(() => {
-      index = (index + 1) % generateResumeMessages.length;
-      setLoadingText(generateResumeMessages[index]);
-    }, 5500); // cycles text roughly every 5.5 seconds for 9 messages (~49s total)
-
-    return () => clearInterval(interval);
-  }, [loading]);
 
   const [selfDescription, setSelfDescription] = useState({
     name: "",
@@ -62,6 +31,29 @@ const MyResume = () => {
     activities: [],
     certifications: [],
   });
+
+  useEffect(() => {
+    async function getResumeDetail() {
+      setError(null);
+      setLoading(true);
+      try {
+        console.log("form submit");
+        const data = await getResumeDetails();
+        if (data) {
+          setSelfDescription(data);
+        }
+      } catch (error) {
+        console.error("Error getting user details:", error);
+        setError(
+          "An error occurred while getting the resume. Please try again.",
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getResumeDetail();
+  }, []);
 
   // Temporary inputs for lists
   const [expInput, setExpInput] = useState({
@@ -198,57 +190,24 @@ const MyResume = () => {
   }
 
   async function submit() {
-    // console.log(
-    //   "Submitting self-description for resume generation:",
-    //   selfDescription,
-    // );
     setError(null);
     setLoading(true);
     try {
-      await generateMyResume(selfDescription);
-    } catch (error) {
-      console.error("Error generating my resume:", error);
-      setError(
-        "An error occurred while generating the resume. Please try again.",
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function getResumeDetail() {
-    setError(null);
-    setLoading(true);
-    try {
-      console.log("use profile detail");
-      const data = await getResumeDetails();
-      if (data) {
-        setSelfDescription(data);
-      }
+      console.log("form submit req received")
+      await submitResumeDetails(selfDescription);
+      console.log("form submitted successfully");
+      toast.success("Details saved successfully", { position: "top-center"})
     } catch (error) {
       console.error("Error getting user details:", error);
       setError("An error occurred while getting the resume. Please try again.");
+      toast.error("something went wrong", { position: "top-center"})
     } finally {
       setLoading(false);
     }
   }
 
-  function useProfile() {
-    setIsChecked((prev) => !prev);
-  }
-
-  useEffect(() => {
-    console.log(isChecked);
-    if (isChecked) {
-      console.log(isChecked);
-      setStep(6);
-      getResumeDetail();
-    }
-  }, [isChecked]);
-
   return (
-    <div className="min-w-full min-h-full p-4 sm:p-6 lg:p-8 flex flex-col justify-center gap-6 lg:gap-8 bg-linear-to-br from-purple-50 to-white">
-      <LoadingOverlay visible={loading} text={loadingText} />
+    <div className="min-w-full min-h-full p-4 sm:p-6 lg:p-8 flex flex-col gap-6 lg:gap-8 bg-linear-to-br from-purple-50 to-white">
       <div className="text-center mx-auto w-full max-w-4xl py-6">
         <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight text-slate-900 drop-shadow-sm">
           Craft Your{" "}
@@ -263,16 +222,6 @@ const MyResume = () => {
       </div>
       <div className="max-w-4xl mx-auto w-full bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-100 relative">
         {/* Step Info Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="profile"
-              checked={isChecked}
-              onCheckedChange={useProfile}
-            />
-            <Label htmlFor="profile">Use saved profile</Label>
-          </div>
-        </div>
         <div className="border-b pb-4 mb-6">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-slate-800">
@@ -1153,7 +1102,7 @@ const MyResume = () => {
                 disabled={loading}
                 className="px-8 bg-linear-to-r from-purple-600 to-blue-500 hover:opacity-90 shadow-md text-white font-bold tracking-wide"
               >
-                {loading ? "Generating..." : "✨ Generate Resume PDF"}
+                Submit
               </Button>
             )}
           </div>
@@ -1197,4 +1146,6 @@ const MyResume = () => {
   );
 };
 
-export default MyResume;
+export default Profile;
+
+

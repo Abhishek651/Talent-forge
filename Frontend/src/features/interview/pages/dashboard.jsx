@@ -13,6 +13,7 @@ import { AlertCircle } from "lucide-react";
 import { LoadingOverlay } from "../components/loadingOverlay";
 import { GeneratePdfBtn } from "../components/GeneratePdfBtn";
 
+
 const Dashboard = () => {
   const { user } = useAuth();
   const {
@@ -115,7 +116,7 @@ const Dashboard = () => {
             </span>
           </h1>
           <div className="px-2 py-3 xl:hidden ">
-            <div className="flex flex-col justify-center items-center rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 via-white to-indigo-50 p-4 shadow-sm transition-all duration-200 hover:shadow-md">
+            <div className="flex flex-col justify-center items-center rounded-2xl border border-purple-100 bg-linear-to-br from-purple-50 via-white to-indigo-50 p-4 shadow-sm transition-all duration-200 hover:shadow-md">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-purple-600">
                 AI Resume Export
               </p>
@@ -125,7 +126,8 @@ const Dashboard = () => {
               </h4>
 
               <p className="mt-1 text-xs leading-5 text-gray-600 text-center">
-                Tailored from your current interview report for a stronger application.
+                Tailored from your current interview report for a stronger
+                application.
               </p>
 
               <div className="mt-4">

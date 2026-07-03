@@ -8,6 +8,8 @@ import Navbar from './components/ui/navbar';
 import Footer from './components/ui/footer';
 import ReportList from './features/interview/pages/reportList';
 import MyResume from './features/interview/pages/myResume';
+import Profile from './features/interview/pages/Profile'
+import ModernTemplateTest from './features/interview/templates/ModernTemplateTest';
 
 // Create a layout component that includes the Navbar and the Outlet
 const RootLayout = () => {
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
             {
               path: '/my-resume',
               element:  <Protected><MyResume /></Protected>
+            },
+            {
+              path: '/profile',
+              element:  <Protected><Profile /></Protected>
+            },
+            {
+              path: '/pdftest',
+              element:  <Protected><ModernTemplateTest /></Protected>
             }
         ]
     }

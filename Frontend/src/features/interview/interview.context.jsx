@@ -11,7 +11,7 @@ export const InterviewProvider = ({ children }) => {
     const [error, setError] = useState("");
 
     return (
-        <InterviewContext.Provider value={{ loading, setLoading, pdfLoading, setPdfLoading, report, setReport, reportList, setReportList, error, setError }}>
+        <InterviewContext.Provider value={{ loading, setLoading, pdfLoading, setPdfLoading, report, setReport, reportList, setReportList, error, setError}}>
             {children}
         </InterviewContext.Provider>
     )
