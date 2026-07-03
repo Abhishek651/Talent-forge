@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     paddingLeft: 34,
     paddingRight: 34,
   },
+
+  // LINK
+  link: { color: "#1f4e79", textDecoration: "none" },
 
   // HEADER
   header: { textAlign: "center", marginBottom: 12 },
@@ -64,7 +67,13 @@ const styles = StyleSheet.create({
 
   // PROJECT
   projectTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", marginBottom: 3 },
+  projectLink: { fontSize: 8, color: "#1f4e79", textDecoration: "none", alignSelf: "center" },
 });
+
+function ensureUrl(url) {
+  if (!url) return url;
+  return url.startsWith("http") ? url : `https://${url}`;
+}
 
 function BulletList({ points = [] }) {
   return points.map((point, i) => (
@@ -149,7 +158,14 @@ function ProjectsSection({ data }) {
       <Text style={styles.sectionTitle}>Projects</Text>
       {data.projects.map((project, i) => (
         <View key={i} style={styles.item}>
-          <Text style={styles.projectTitle}>{project.name}</Text>
+          <View style={styles.eduHeader}>
+            <Text style={styles.projectTitle}>{project.name}</Text>
+            {project.link ? (
+              <Link src={ensureUrl(project.link)}>
+                <Text style={styles.projectLink}>View Project</Text>
+              </Link>
+            ) : null}
+          </View>
           <BulletList points={project.points} />
         </View>
       ))}
@@ -285,7 +301,19 @@ export function ModernTemplate({ data }) {
           {data.title ? <Text style={styles.title}>{data.title}</Text> : null}
           <Text style={styles.contact}>{contactParts.join(" | ")}</Text>
           {linkParts.length > 0 && (
-            <Text style={styles.contact}>{linkParts.join(" | ")}</Text>
+            <Text style={styles.contact}>
+              {data.contact?.linkedin && (
+                <Link src={ensureUrl(data.contact.linkedin)} style={styles.link}>
+                  LinkedIn
+                </Link>
+              )}
+              {data.contact?.linkedin && data.contact?.github ? " | " : ""}
+              {data.contact?.github && (
+                <Link src={ensureUrl(data.contact.github)} style={styles.link}>
+                  GitHub
+                </Link>
+              )}
+            </Text>
           )}
         </View>
 

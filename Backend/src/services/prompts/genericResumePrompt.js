@@ -238,6 +238,7 @@ expected JSON format:
 "projects": [
 {
 "name": "Project Name",
+"link": "https://github.com/profile/project",
 "points": [
 "Project achievement",
 "Project achievement"
@@ -298,6 +299,7 @@ IMPORTANT:
 * Optimize all generated content for a professional one-page resume.
 * Do NOT copy placeholder values from the JSON example.
 * Generate content exclusively from the candidate's provided information.
+* Include "link" in projects only if the candidate provides a URL; otherwise omit the field.
 `;
 
 module.exports = genericResumePrompt;

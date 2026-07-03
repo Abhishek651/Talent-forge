@@ -238,6 +238,7 @@ expected JSON format:
   "projects": [
     {
       "name": "Project Name",
+      "link": "https://github.com/profile/project",
       "points": [
         "Project achievement",
         "Project achievement"

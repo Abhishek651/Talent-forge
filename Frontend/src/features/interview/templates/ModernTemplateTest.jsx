@@ -35,6 +35,7 @@ const resumeData = {
   projects: [
     {
       name: "TalentForge",
+      link: "github.com/alex/talentforge",
       points: [
         "Designed and developed an AI-powered interview preparation platform using React, Express, and MongoDB to deliver personalized practice sessions.",
         "Implemented RESTful backend services and database schemas in MongoDB to manage user data, interview questions, and performance tracking.",

@@ -18,11 +18,11 @@ const headers = {
 //       { type: "video_url", video_url: { url: "https://example.com/video.mp4" } },
 //   ]}]
 
-// nvidia.api.js
+// minimaxai/minimax-m3
 async function nvidiaService(prompt) {
   console.log('Using Nvidia services')
   const payload = {
-    model: "minimaxai/minimax-m3",
+    model: "openai/gpt-oss-120b",
     messages: [{ role: "user", content: prompt }],
     max_tokens: 8192,
     temperature: 1.0,

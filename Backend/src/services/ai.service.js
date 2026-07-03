@@ -105,6 +105,7 @@ const resumeSchema = z.object({
     .array(
       z.object({
         name: z.string().default(""),
+        link: z.string().optional().default(""),
         points: z.array(z.string()).default([]),
       }),
     )
