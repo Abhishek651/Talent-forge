@@ -53,6 +53,9 @@ function Navbar() {
                       <Link to="/my-resume">New Resume</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
+                      <Link to="/profile">Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
                       <button className="w-full text-left" onClick={logout}>
                         Logout
                       </button>
@@ -71,6 +74,7 @@ function Navbar() {
                 </Link>
                 <Link to='/dashboard' className="px-4 py-2 font-semibold">Dashboard</Link>
                 <Link to='/my-resume' className="px-4 py-2 font-semibold">New Resume</Link>
+                <Link to='/profile' className="px-4 py-2 font-semibold">Profile</Link>
                 <Button variant="outline" onClick={logout}>
                   Logout
                 </Button>
