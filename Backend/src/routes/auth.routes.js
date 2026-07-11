@@ -6,7 +6,8 @@ const {
     registerUserController, 
     loginUserController, 
     logoutUserController,
-    getMeController
+    getMeController,
+    emailVerificationController
     } = require('../Controllers/auth.controllers')
 const authMiddleware = require('../middlewares/auth.middleware')
 
@@ -16,8 +17,15 @@ const authMiddleware = require('../middlewares/auth.middleware')
  * @description registration of new user
  * @access public
  */
-
 authRouter.post('/register',registerUserController)
+
+
+/**
+ * @route POST /api/auth/verify-otp
+ * @description verify the otp sent to the user's email
+ * @access public
+ */
+authRouter.post('/verify-otp',emailVerificationController)
 
 
 
