@@ -33,9 +33,9 @@ async function registerUserController(req, res) {
       return res.status(400).json({ message: "Username already taken" });
     }
     if (isUserAlreadyExist.email === email) {
-      return res
-        .status(400)
-        .json({ message: "Account already exist with this email" });
+      return res.status(400).json({
+        message: "Account already exist with this email",
+      });
     }
   }
 
@@ -57,21 +57,6 @@ async function registerUserController(req, res) {
     otpExpiry: Date.now() + 10 * 60 * 1000, // OTP expires in 10 minutes
   });
 
-  //   // Generate a JWT token for the newly registered user
-  //   const token = jwt.sign(
-  //     { userId: user._id, username: user.username },
-  //     process.env.SECRET,
-  //     { expiresIn: "1d" },
-  //   );
-
-  //   // Set the token in a cookie and send a success response
-  //   res.cookie("token", token, {
-  //     httpOnly: true,
-  //     secure: true,
-  //     sameSite: "none",
-  //     maxAge: 24 * 60 * 60 * 1000,
-  //   });
-
   // Send the OTP to the user's email
   await sendEmail(email, otp);
 
@@ -81,6 +66,7 @@ async function registerUserController(req, res) {
       id: user._id,
       username: user.username,
       email: user.email,
+      verified: user.isVerified,
     },
   });
 }
@@ -93,16 +79,37 @@ async function registerUserController(req, res) {
 
 async function emailVerificationController(req, res) {
   const { email, otp } = req.body;
+  console.log("backend otp verification controller", email, otp);
   const user = await userModal.findOne({ email });
-
+  console.log("backend otp verification controller user", user);
+  console.log("otp matching", user.otp, Number(otp), user.otp === Number(otp));
+  console.log(
+    "otp expiry",
+    user.otpExpiry,
+    Date.now(),
+    user.otpExpiry < Date.now(),
+  );
+  if (!user) {
+    return res.status(400).json({ message: "User not found", success: false });
+  }
   if (user.isVerified) {
-    return res.status(400).json({ message: "Email verified" });
+    return res.status(400).json({
+      message: "Email already verified",
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        verified: user.isVerified,
+      },
+    });
   }
 
-  if (!user.otp === otp)
-    return res.status(400).json({ message: "Invalid OTP" });
-  if (Date.now() > user.otpExpiry)
-    return res.status(400).json({ message: "OTP expired" });
+  if (user.otp !== Number(otp)) {
+    return res.status(400).json({ message: "Invalid OTP", success: false });
+  }
+  if (Date.now() > user.otpExpiry) {
+    return res.status(400).json({ message: "OTP expired", success: false });
+  }
 
   user.isVerified = true;
   user.otp = null;
@@ -124,7 +131,15 @@ async function emailVerificationController(req, res) {
     maxAge: 24 * 60 * 60 * 1000,
   });
 
-  return res.status(200).json({ message: "Email verified" });
+  return res.status(200).json({
+    message: "Email verified",
+    user: {
+      id: user._id,
+      email: user.email,
+      username: user.username,
+      verified: user.isVerified,
+    },
+  });
 }
 
 /**
@@ -139,26 +154,42 @@ async function loginUserController(req, res) {
   //fetching the user
   const user = await userModal.findOne({ email });
 
-  //validating the user and password
+  //validating the user exists
   if (!user) {
-    return res.status(400).json({ message: "Invalid email or password" });
+    return res
+      .status(400)
+      .json({ message: "Invalid email or password", success: false });
   }
-
+  //validating the password
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(400).json({ message: "Invalid email or password" });
+    return res
+      .status(400)
+      .json({ message: "Invalid email or password", success: false });
   }
 
+  // Check if the user's email is verified
   if (!user.isVerified) {
     const otp = Math.floor(Math.random() * 900000) + 100000;
 
-    const user = await userModal.findOneAndUpdate({
-      otp: otp,
-      otpExpiry: Date.now() + 10 * 60 * 1000, // OTP expires in 10 minutes
-    });
+    await userModal.findOneAndUpdate(
+      { email },
+      {
+        otp,
+        otpExpiry: Date.now() + 10 * 60 * 1000,
+      },
+    );
 
     await sendEmail(email, otp);
-    return res.status(400).json({ message: "Email not verified, OTP sent to email" });
+    return res.status(200).json({
+      message: "Email not verified, OTP sent to email",
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        verified: user.isVerified,
+      },
+    });
   }
 
   // Generate a JWT token for the logged-in user
@@ -181,6 +212,7 @@ async function loginUserController(req, res) {
       id: user._id,
       email: user.email,
       username: user.username,
+      verified: user.isVerified,
     },
   });
 }
@@ -222,6 +254,7 @@ async function getMeController(req, res) {
       id: user.id,
       username: user.username,
       email: user.email,
+      verified: user.isVerified,
     },
   });
 }
