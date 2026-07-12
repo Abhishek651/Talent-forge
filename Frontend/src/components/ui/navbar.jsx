@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 function Navbar() {
-  const { handleLogout } = useAuth();
+  const { handleLogout, user} = useAuth();
   const navigate = useNavigate();
   async function logout(e) {
     e.preventDefault();
@@ -29,59 +29,65 @@ function Navbar() {
         <Anvil className="text-purple-600 size-4 md:size-6" />
         <p className="ml-1 font-semibold lg:text-xl">TalentForge</p>
       </span>
-      <Protected>
+      {user?.verified && (
         <div>
-            <div className="md:hidden">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
-                    <Menu className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-64 p-4">
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <Link to="/">Create New Interview Report</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/dashboard">Dashboard</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/reports">All Reports</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/my-resume">New Resume</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/profile">Profile</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <button className="w-full text-left" onClick={logout}>
-                        Logout
-                      </button>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <div>
-              <div className="hidden md:flex gap-4">
-                <Link
-                  to="/"
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium shadow-sm"
-                >
-                  Create New Interview Report
-                </Link>
-                <Link to='/dashboard' className="px-4 py-2 font-semibold">Dashboard</Link>
-                <Link to='/my-resume' className="px-4 py-2 font-semibold">New Resume</Link>
-                <Link to='/profile' className="px-4 py-2 font-semibold">Profile</Link>
-                <Button variant="outline" onClick={logout}>
-                  Logout
+          <div className="md:hidden">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <Menu className="size-4" />
                 </Button>
-              </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-64 p-4">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Link to="/">Create New Interview Report</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/reports">All Reports</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/my-resume">New Resume</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <button className="w-full text-left" onClick={logout}>
+                      Logout
+                    </button>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <div>
+            <div className="hidden md:flex gap-4">
+              <Link
+                to="/"
+                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium shadow-sm"
+              >
+                Create New Interview Report
+              </Link>
+              <Link to="/dashboard" className="px-4 py-2 font-semibold">
+                Dashboard
+              </Link>
+              <Link to="/my-resume" className="px-4 py-2 font-semibold">
+                New Resume
+              </Link>
+              <Link to="/profile" className="px-4 py-2 font-semibold">
+                Profile
+              </Link>
+              <Button variant="outline" onClick={logout}>
+                Logout
+              </Button>
             </div>
+          </div>
         </div>
-      </Protected>
+      )}
     </div>
   );
 }

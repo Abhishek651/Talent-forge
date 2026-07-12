@@ -13,7 +13,7 @@ export async function register({ username, password, email }) {
         // Sends a POST request to 'http://localhost:3000/api/auth/register'
         // Second argument is the "Request Body" (the data the user typed in)
         const response = await api.post('/register', { username, email, password });
-        
+        console.log(response);
         return response.data; // Return only the useful data back to the React component
     } catch (err) {
         console.error("Registration error:", err);
@@ -26,9 +26,24 @@ export async function login({ email, password }) {
     try {
         // Sends a POST request to '/login' with the user's email and password
         const response = await api.post('/login', { email, password });
+        console.log('auth api', response)
         return response.data;
     } catch (err) {
         console.error("Login error:", err);
+        throw err;
+    }
+}
+
+//verify email using otp
+export async function verifyOtp(email, otp){
+    try{
+        console.log('ready to sent', email, otp)
+        const response = await api.post('/verify-otp',{email, otp});
+        console.log(response)
+        return response.data;
+    }catch(err){
+        console.error("OTP verification error:", err);
+        console.log('err msg', err.response.data);
         throw err;
     }
 }
@@ -53,7 +68,7 @@ export async function getMe() {
         const response = await api.get('/get-me');
         return response.data;
     } catch (err) {
-        console.error("Get user info error:", err);
+        console.error("Get user info error:", err.response);
         throw err;
     }
 }

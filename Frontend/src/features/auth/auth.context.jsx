@@ -17,6 +17,8 @@ export const AuthProvider = ({ children }) => {
   */
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
 
     //getting logged in user on refresh
     // getMe func => auth.api => backend getMe func run => token verify from cookies => 
@@ -26,7 +28,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(()=>{
     const getAndSetUser = async () => {
         try {
+          setLoading(true)
             const data = await getMe();
+            console.log(data)
+            setLoading(false)
             setUser(data.user);
         } catch (err) {
             setUser(null);
@@ -51,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   Context will not work
   */
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, setLoading,error, setError }}>
       {children}
     </AuthContext.Provider>
   );

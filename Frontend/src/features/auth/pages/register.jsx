@@ -1,8 +1,10 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '../Hooks/useAuth';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "../Hooks/useAuth";
+import { toast } from "sonner"
+
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,8 +19,17 @@ const Register = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     // console.log("Form Submitted: ", user);
-    await handleRegister({ email: user.email, username: user.username, password: user.password });
-    navigate('/');
+    try {
+      await handleRegister({
+        email: user.email,
+        username: user.username,
+        password: user.password,
+      });
+      navigate("/verify-otp");
+    } catch (error) {
+      console.log("Registration failed:", error.response.data.message);
+      toast.error(error.response.data.message);
+    }
   }
 
   return (
@@ -28,25 +39,35 @@ const Register = () => {
           Forge Your <br /> Future.
         </h3>
         <p className="text-[#555] max-w-[300px] leading-[1.6]">
-          Join TalentForge today. Master your technical skills and ace your next interview.
+          Join TalentForge today. Master your technical skills and ace your next
+          interview.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-1 flex-col justify-center bg-[#1d1c1c] text-white p-12 md:p-16 lg:p-20">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-1 flex-col justify-center bg-[#1d1c1c] text-white p-12 md:p-16 lg:p-20"
+      >
         <div className="mb-6">
-          <h5 className="text-2xl font-bold text-white mb-2">Create your account</h5>
-          <p className="text-[#888] text-sm">Start your journey with us today for free.</p>
+          <h5 className="text-2xl font-bold text-white mb-2">
+            Create your account
+          </h5>
+          <p className="text-[#888] text-sm">
+            Start your journey with us today for free.
+          </p>
         </div>
 
         <div className="flex flex-col gap-6">
           <div className="relative group">
-            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">USERNAME *</span>
+            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">
+              USERNAME *
+            </span>
             <Input
               id="username"
               name="username"
               type="text"
               required
-              value={user.username || ''}
+              value={user.username || ""}
               onChange={handleInput}
               placeholder="Enter your username"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -54,13 +75,15 @@ const Register = () => {
           </div>
 
           <div className="relative group">
-            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">EMAIL ADDRESS *</span>
+            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">
+              EMAIL ADDRESS *
+            </span>
             <Input
               id="email"
               name="email"
               type="email"
               required
-              value={user.email || ''}
+              value={user.email || ""}
               onChange={handleInput}
               placeholder="john@company.com"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -68,30 +91,42 @@ const Register = () => {
           </div>
 
           <div className="relative group">
-            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">PASSWORD *</span>
+            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">
+              PASSWORD *
+            </span>
             <Input
               id="password"
               name="password"
               type="password"
               required
-              value={user.password || ''}
+              value={user.password || ""}
               onChange={handleInput}
               placeholder="Min. 8 characters"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
             />
           </div>
 
-          <Button type="submit" disabled={loading} className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors"
+          >
             Register
           </Button>
 
           <p className="text-[#888] text-sm mt-2">
-            Already have an account? <Link to={'/login'} className="text-[#8b5cf6] hover:underline underline-offset-2">Login here</Link>
+            Already have an account?{" "}
+            <Link
+              to={"/login"}
+              className="text-[#8b5cf6] hover:underline underline-offset-2"
+            >
+              Login here
+            </Link>
           </p>
         </div>
       </form>
     </div>
   );
-}
+};
 
 export default Register;

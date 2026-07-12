@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '../Hooks/useAuth';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "../Hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
   const { handleLogin, loading } = useAuth();
 
+  //temporary usestate for input fields
   let [user, setUser] = useState({});
   const [error, setError] = useState("");
 
@@ -20,8 +21,20 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await handleLogin({ email: user.email, password: user.password });
-      navigate('/');
+      const response = await handleLogin({
+        email: user.email,
+        password: user.password,
+      });
+      console.log(response);
+      console.log('verified', response.user.verified);
+
+      if (response.user.verified) {
+        console.log("Navigating to Home");
+        navigate("/");
+      } else {
+        console.log("Navigating to Verify OTP");
+        navigate("/verify-otp");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
     }
@@ -38,21 +51,30 @@ const Login = () => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-1 flex-col justify-center bg-[#1d1c1c] text-white p-12 md:p-16 lg:p-20">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-1 flex-col justify-center bg-[#1d1c1c] text-white p-12 md:p-16 lg:p-20"
+      >
         <div className="mb-6">
-          <h5 className="text-2xl font-bold text-white mb-2">Log in to your account</h5>
-          <p className="text-[#888] text-sm">Enter your credentials to access your dashboard.</p>
+          <h5 className="text-2xl font-bold text-white mb-2">
+            Log in to your account
+          </h5>
+          <p className="text-[#888] text-sm">
+            Enter your credentials to access your dashboard.
+          </p>
         </div>
 
         <div className="flex flex-col gap-6">
           <div className="relative group">
-            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">EMAIL ADDRESS *</span>
+            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">
+              EMAIL ADDRESS *
+            </span>
             <Input
               id="email"
               name="email"
               type="email"
               required
-              value={user.email || ''}
+              value={user.email || ""}
               onChange={handleInput}
               placeholder="john@company.com"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -60,34 +82,44 @@ const Login = () => {
           </div>
 
           <div className="relative group">
-            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">PASSWORD *</span>
+            <span className="absolute -top-2.5 left-3 bg-[#1d1c1c] px-1 text-[#888] font-bold text-[0.8rem] tracking-[1px] uppercase z-10 transition-colors group-focus-within:text-[#8b5cf6]">
+              PASSWORD *
+            </span>
             <Input
               id="password"
               name="password"
               type="password"
               required
-              value={user.password || ''}
+              value={user.password || ""}
               onChange={handleInput}
               placeholder="Min. 8 characters"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
             />
           </div>
 
-          {error && (
-            <p className="text-red-400 text-sm -mt-2">{error}</p>
-          )}
+          {error && <p className="text-red-400 text-sm -mt-2">{error}</p>}
 
-          <Button type="submit" disabled={loading} className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors"
+          >
             Submit
           </Button>
 
           <p className="text-[#888] text-sm mt-2">
-            Don't have an account? <Link to="/register" className="text-[#8b5cf6] hover:underline underline-offset-2">Register</Link>
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-[#8b5cf6] hover:underline underline-offset-2"
+            >
+              Register
+            </Link>
           </p>
         </div>
       </form>
     </div>
   );
-}
+};
 
 export default Login;

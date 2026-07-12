@@ -10,7 +10,7 @@ const Protected = ({ children }) => {
   }
 
   // 🔐 If not logged in → redirect
-  if (!user) {
+  if (!user || !user.verified) {
     return <Navigate to="/login" replace />;
   }
 

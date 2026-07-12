@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
-import { login, register, logout, getMe } from "../services/auth.api";
+import { login, verifyOtp, register, logout, getMe } from "../services/auth.api";
 
 /*
 It's handling two files, one auth.api and another is auth.context
@@ -17,96 +17,115 @@ This hook connects:
  It acts as a bridge between UI and backend
 */
 export const useAuth = () => {
-
-    /*
+  /*
     Step 1: Access global auth state
     */
-    const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
 
-    /*
+  /*
      Extract values from context
     */
-    const { user, loading, setUser, setLoading } = context;
+  const { user, loading, setUser, setLoading } = context;
 
-    /*
+  /*
     LOGIN FUNCTION
     */
-    const handleLogin = async ({ email, password }) => {
-        setLoading(true); // show loading UI
+  const handleLogin = async ({ email, password }) => {
+    setLoading(true); // show loading UI
 
-        try {
-            const data = await login({ email, password });
-            setUser(data.user); 
-        } catch (err) {
-            console.log(err);
-            throw err;
-        } finally {
-            setLoading(false); // stop loading
-        }
+    try {
+      const data = await login({ email, password });
+      setUser(data.user);
+      return data; // return data to the component for further handling (like navigation)
+    } catch (err) {
+      console.log(err);
+      throw err;
+    } finally {
+      setLoading(false); // stop loading
+    }
+  };
 
-    };
+  /* REGISTER FUNCTION */
+  const handleRegister = async ({ username, email, password}) => {
+    setLoading(true);
 
-    /*
-    📝 REGISTER FUNCTION
-    */
-    const handleRegister = async ({ username, email, password }) => {
-        setLoading(true);
+    try {
+      const data = await register({ username, email, password});
+      console.log("Registration successful:", data);
+      setUser(data.user);
+    } catch (err) {
+      console.log(err.response.data.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            const data = await register({ username, email, password });
-            setUser(data.user);
-        } catch (err) {
-            console.log(err)
-        } finally {
-            setLoading(false);
-        }
-    };
+  // verify otp function
+  const handleVerifyOtp = async (email, otp) => {
+    setLoading(true);
+    try {
+        console.log('ready to sent', email, otp)
+        const data = await verifyOtp( email, otp);
+        setLoading(false);
+        console.log("OTP verified successfully:", data);
+        setUser(data.user);
+    } catch (err) {
+        console.log(err.response.data.message);
+        throw err;
+    } finally {
+        setLoading(false);
+    }
+  }
 
-    /*
+  /*
      LOGOUT FUNCTION
     */
-    const handleLogout = async () => {
-        setLoading(true);
+  const handleLogout = async () => {
+    setLoading(true);
 
-        try {
-            await logout(); // clear session/cookie from backend
-            setUser(null); // remove user from state
-        } catch (err) {
-            console.log(err)
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      await logout(); // clear session/cookie from backend
+      setUser(null); // remove user from state
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    /*
+  /*
      CHECK AUTH (Auto login if cookie exists)
 
      Used when app loads
     */
-    const checkAuth = async () => {
-        setLoading(true);
+  const checkAuth = async () => {
+    setLoading(true);
 
-        try {
-            const data = await getMe(); // backend checks cookie
-            setUser(data.user);
-        } catch (err) {
-            console.log(err)
-            setUser(null)
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      const data = await getMe(); // backend checks cookie
+      setUser(data.user);
+    } catch (err) {
+      console.log(err);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-
-    
-    /*
+  /*
      Return everything to components
     */
-    return {
-        user, loading, handleLogin, handleRegister, handleLogout, checkAuth
-    };
+  return {
+    user,
+    loading,
+    handleLogin,
+    handleRegister,
+    handleLogout,
+    handleVerifyOtp,
+    checkAuth,
+  };
 };
-
 
 // Flow:
 
