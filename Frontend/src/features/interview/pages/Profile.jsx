@@ -465,7 +465,7 @@ const Profile = () => {
               <Button
                 type="button"
                 onClick={addExperience}
-                variant="secondary"
+                variant=""
                 className="w-fit self-start"
               >
                 Add Experience Details
@@ -570,7 +570,7 @@ const Profile = () => {
               <Button
                 type="button"
                 onClick={addEducation}
-                variant="secondary"
+                variant=""
                 className="w-fit self-start"
               >
                 Add Education
@@ -718,7 +718,7 @@ const Profile = () => {
                 <Button
                   type="button"
                   onClick={addProject}
-                  variant="secondary"
+                  variant=""
                   className="w-fit self-start"
                 >
                   Add Project Entry
@@ -823,7 +823,7 @@ const Profile = () => {
                 <Button
                   type="button"
                   onClick={addCertification}
-                  variant="secondary"
+                  variant=""
                   className="w-fit self-start"
                 >
                   Add Certification
