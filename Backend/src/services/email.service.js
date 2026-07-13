@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendEmail(email, otp) {
   try {
-    onsole.log("Node version:", process.version);
+    console.log("Node version:", process.version);
     console.log("SMTP_USER:", process.env.SMTP_USER);
     console.log("SMTP_PASS loaded:", !!process.env.SMTP_PASS);
     // Check SMTP connection
