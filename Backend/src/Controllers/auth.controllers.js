@@ -195,8 +195,8 @@ async function loginUserController(req, res) {
   // Check if the user's email is verified
   if (!user.isVerified) {
     if (process.env.NODE_ENV === "production") {
-      // auto-verify in prod since OTP is skipped on registration
       await userModal.findByIdAndUpdate(user._id, { isVerified: true });
+      user.isVerified = true;
     } else {
       const otp = Math.floor(Math.random() * 900000) + 100000;
 
