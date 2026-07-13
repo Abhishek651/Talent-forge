@@ -9,8 +9,9 @@ import { Spinner } from "@/components/ui/spinner";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { loading, handleRegister, user} = useAuth();
+  const { handleRegister, user} = useAuth();
   let [registerUser, setRegisterUser] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   if(user && user.verified){
     navigate("/");
@@ -23,7 +24,7 @@ const Register = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // console.log("Form Submitted: ", user);
+    setSubmitting(true);
     try {
       await handleRegister({
         email: registerUser.email,
@@ -34,6 +35,8 @@ const Register = () => {
     } catch (error) {
       console.log("Registration failed:", error.response.data.message);
       toast.error(error.response.data.message);
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -113,10 +116,10 @@ const Register = () => {
 
           <Button
             type="submit"
-            disabled={loading}
+            disabled={submitting}
             className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors"
           >
-            {loading ? (
+            {submitting ? (
               <>
                 <Spinner className="size-4" />
                 submitting...

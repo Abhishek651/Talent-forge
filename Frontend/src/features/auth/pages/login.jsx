@@ -8,11 +8,12 @@ import { Spinner } from "@/components/ui/spinner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { handleLogin, loading, user} = useAuth();
+  const { handleLogin, user} = useAuth();
 
   //temporary usestate for input fields
   let [loginUser, setLoginUser] = useState({});
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   if(user && user.verified){
     navigate("/");
@@ -26,6 +27,7 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setSubmitting(true);
     try {
       const response = await handleLogin({
         email: loginUser.email,
@@ -43,6 +45,8 @@ const Login = () => {
       }
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -107,10 +111,10 @@ const Login = () => {
 
           <Button
             type="submit"
-            disabled={loading}
+            disabled={submitting}
             className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors"
           >
-            {loading ? (
+            {submitting ? (
               <>
                 <Spinner className="size-4" />
                 submitting...
