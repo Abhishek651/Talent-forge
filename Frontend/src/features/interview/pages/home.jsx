@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { getResumeDetails } from "../services/profile.api";
+import { Spinner } from "@/components/ui/spinner";
+
 
 const Home = () => {
   const {
