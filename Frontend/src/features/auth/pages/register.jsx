@@ -3,17 +3,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "../Hooks/useAuth";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 
 const Register = () => {
   const navigate = useNavigate();
-  const { loading, handleRegister } = useAuth();
-  let [user, setUser] = useState({});
+  const { loading, handleRegister, user} = useAuth();
+  let [registerUser, setRegisterUser] = useState({});
+
+  if(user && user.verified){
+    navigate("/");
+  }
 
   function handleInput(e) {
     const value = e.target.value;
-    setUser((c) => ({ ...c, [e.target.name]: value }));
+    setRegisterUser((c) => ({ ...c, [e.target.name]: value }));
   }
 
   async function handleSubmit(e) {
@@ -21,9 +26,9 @@ const Register = () => {
     // console.log("Form Submitted: ", user);
     try {
       await handleRegister({
-        email: user.email,
-        username: user.username,
-        password: user.password,
+        email: registerUser.email,
+        username: registerUser.username,
+        password: registerUser.password,
       });
       navigate("/verify-otp");
     } catch (error) {
@@ -67,7 +72,7 @@ const Register = () => {
               name="username"
               type="text"
               required
-              value={user.username || ""}
+              value={registerUser.username || ""}
               onChange={handleInput}
               placeholder="Enter your username"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -83,7 +88,7 @@ const Register = () => {
               name="email"
               type="email"
               required
-              value={user.email || ""}
+              value={registerUser.email || ""}
               onChange={handleInput}
               placeholder="john@company.com"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -99,7 +104,7 @@ const Register = () => {
               name="password"
               type="password"
               required
-              value={user.password || ""}
+              value={registerUser.password || ""}
               onChange={handleInput}
               placeholder="Min. 8 characters"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -111,7 +116,14 @@ const Register = () => {
             disabled={loading}
             className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors"
           >
-            Register
+            {loading ? (
+              <>
+                <Spinner className="size-4" />
+                submitting...
+              </>
+            ) : (
+              "Register"
+            )}
           </Button>
 
           <p className="text-[#888] text-sm mt-2">

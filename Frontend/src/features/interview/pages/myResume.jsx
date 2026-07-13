@@ -228,6 +228,8 @@ const MyResume = () => {
       }
     } catch (error) {
       console.error("Error getting user details:", error);
+        toast.error('no details found')
+
       setError("An error occurred while getting the resume. Please try again.");
     } finally {
       setLoading(false);

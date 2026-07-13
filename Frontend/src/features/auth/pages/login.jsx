@@ -3,18 +3,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "../Hooks/useAuth";
+import { Spinner } from "@/components/ui/spinner";
+
 
 const Login = () => {
   const navigate = useNavigate();
-  const { handleLogin, loading } = useAuth();
+  const { handleLogin, loading, user} = useAuth();
 
   //temporary usestate for input fields
-  let [user, setUser] = useState({});
+  let [loginUser, setLoginUser] = useState({});
   const [error, setError] = useState("");
+
+  if(user && user.verified){
+    navigate("/");
+  }
 
   function handleInput(e) {
     const value = e.target.value;
-    setUser((c) => ({ ...c, [e.target.name]: value }));
+    setLoginUser((c) => ({ ...c, [e.target.name]: value }));
     setError("");
   }
 
@@ -22,11 +28,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await handleLogin({
-        email: user.email,
-        password: user.password,
+        email: loginUser.email,
+        password: loginUser.password,
       });
       console.log(response);
-      console.log('verified', response.user.verified);
+      console.log("verified", response.user.verified);
 
       if (response.user.verified) {
         console.log("Navigating to Home");
@@ -74,7 +80,7 @@ const Login = () => {
               name="email"
               type="email"
               required
-              value={user.email || ""}
+              value={loginUser.email || ""}
               onChange={handleInput}
               placeholder="john@company.com"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -90,7 +96,7 @@ const Login = () => {
               name="password"
               type="password"
               required
-              value={user.password || ""}
+              value={loginUser.password || ""}
               onChange={handleInput}
               placeholder="Min. 8 characters"
               className="bg-transparent border-[#333] hover:border-[#555] text-white placeholder:text-[#555] focus-visible:border-[#8b5cf6] focus-visible:ring-0 rounded-lg h-14 px-4"
@@ -104,7 +110,14 @@ const Login = () => {
             disabled={loading}
             className="mt-4 h-12 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg text-base font-bold w-full transition-colors"
           >
-            Submit
+            {loading ? (
+              <>
+                <Spinner className="size-4" />
+                submitting...
+              </>
+            ) : (
+              "Login"
+            )}
           </Button>
 
           <p className="text-[#888] text-sm mt-2">

@@ -8,7 +8,6 @@ import { useNavigate } from "react-router";
 import RecentlyCreated from "../components/recentlyCreated";
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { LoadingOverlay } from "../components/loadingOverlay";
 import { Link } from "react-router-dom";
 import { Label } from "@/components/ui/label";
@@ -18,7 +17,6 @@ import { getResumeDetails } from "../services/profile.api";
 const Home = () => {
   const {
     pdfLoading,
-    setPdfLoading,
     loading,
     setLoading,
     generateReport,
@@ -187,7 +185,14 @@ const Home = () => {
             <Label htmlFor="profile">Use saved profile</Label>
           </div>
           <Button type="submit" className="col-span-full">
-            Submit
+           {loading ? (
+                <>
+                  <Spinner className="size-4" />
+                  Generating...
+                </>
+              ) : (
+                "Submit"
+              )}
           </Button>
         </form>
       </div>
