@@ -1,7 +1,6 @@
 const nodemailer = require("nodemailer");
 const { otpEmailTemplate } = require("../template/otpTemplate");
 
-
 const dns = require("dns");
 
 dns.setDefaultResultOrder("ipv4first");
@@ -18,6 +17,9 @@ const transporter = nodemailer.createTransport({
 
 async function sendEmail(email, otp) {
   try {
+    onsole.log("Node version:", process.version);
+    console.log("SMTP_USER:", process.env.SMTP_USER);
+    console.log("SMTP_PASS loaded:", !!process.env.SMTP_PASS);
     // Check SMTP connection
     await transporter.verify();
     console.log("SMTP connection successful");
