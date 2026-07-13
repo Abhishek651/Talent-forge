@@ -53,6 +53,7 @@ export const useAuth = () => {
       const data = await register({ username, email, password});
       console.log("Registration successful:", data);
       setUser(data.user);
+      return data;
     } catch (err) {
       console.log(err.response.data.message);
       throw err;

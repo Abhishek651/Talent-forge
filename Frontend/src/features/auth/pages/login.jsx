@@ -10,10 +10,10 @@ const Login = () => {
   const navigate = useNavigate();
   const { handleLogin, user} = useAuth();
 
-  //temporary usestate for input fields
   let [loginUser, setLoginUser] = useState({});
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
 
   if(user && user.verified){
     navigate("/");

@@ -1,44 +1,36 @@
-const nodemailer = require("nodemailer");
 const { otpEmailTemplate } = require("../template/otpTemplate");
 
-const dns = require("dns");
-
-dns.setDefaultResultOrder("ipv4first");
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  logger: true,
-  debug: true,
-  
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
-
 async function sendEmail(email, otp) {
-  try {
-    console.log("Node version:", process.version);
-    console.log("SMTP_USER:", process.env.SMTP_USER);
-    console.log("SMTP_PASS loaded:", !!process.env.SMTP_PASS);
-    // Check SMTP connection
-    await transporter.verify();
-    console.log("SMTP connection successful");
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("Email sending is not configured for production.");
+  }
 
-    // Send email
+  const dns = require("dns");
+  dns.setDefaultResultOrder("ipv4first");
+  const nodemailer = require("nodemailer");
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    requireTLS: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  try {
+    await transporter.verify();
     await transporter.sendMail({
       from: `"TalentForge" <${process.env.SMTP_USER}>`,
       to: email,
       subject: "Verify your TalentForge account",
       html: otpEmailTemplate(otp),
     });
-
-    console.log("Email sent successfully");
+    console.log("Email sent via Nodemailer");
   } catch (err) {
-    console.error("SMTP Error:", err);
+    console.error("Email send error:", err);
     throw err;
   }
 }

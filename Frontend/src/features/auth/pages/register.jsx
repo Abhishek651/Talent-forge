@@ -13,6 +13,7 @@ const Register = () => {
   let [registerUser, setRegisterUser] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
+
   if(user && user.verified){
     navigate("/");
   }
@@ -26,12 +27,16 @@ const Register = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await handleRegister({
+      const response = await handleRegister({
         email: registerUser.email,
         username: registerUser.username,
         password: registerUser.password,
       });
-      navigate("/verify-otp");
+      if (response.user.verified) {
+        navigate("/");
+      } else {
+        navigate("/verify-otp");
+      }
     } catch (error) {
       console.log("Registration failed:", error.response.data.message);
       toast.error(error.response.data.message);

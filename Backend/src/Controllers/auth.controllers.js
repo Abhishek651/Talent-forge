@@ -42,22 +42,46 @@ async function registerUserController(req, res) {
   // Hash the password before saving to the database
   const hashPassword = await bcrypt.hash(password, 10);
 
-  // create otp
-  // Math.random() * 900000 → range [0, 900000)
-  // Math.floor(...) → [0, 899999]
-  // + 100000 → [100000, 999999] — always exactly 6 digits
+  const isProduction = process.env.NODE_ENV === "production";
+
+  // In production, skip OTP and auto-verify
+  if (isProduction) {
+    const user = await userModal.create({
+      username,
+      email,
+      password: hashPassword,
+      isVerified: true,
+    });
+
+    const token = jwt.sign(
+      { userId: user._id, username: user.username },
+      process.env.SECRET,
+      { expiresIn: "1d" },
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(201).json({
+      message: "Registration successful",
+      user: { id: user._id, username: user.username, email: user.email, verified: true },
+    });
+  }
+
   const otp = Math.floor(Math.random() * 900000) + 100000;
 
-  // Create a new user in the database with the provided username, email, and hashed password
   const user = await userModal.create({
     username,
     email,
     password: hashPassword,
     otp: otp,
-    otpExpiry: Date.now() + 10 * 60 * 1000, // OTP expires in 10 minutes
+    otpExpiry: Date.now() + 10 * 60 * 1000,
   });
 
-  // Send the OTP to the user's email
   await sendEmail(email, otp);
 
   res.status(201).json({
@@ -170,26 +194,28 @@ async function loginUserController(req, res) {
 
   // Check if the user's email is verified
   if (!user.isVerified) {
-    const otp = Math.floor(Math.random() * 900000) + 100000;
+    if (process.env.NODE_ENV === "production") {
+      // auto-verify in prod since OTP is skipped on registration
+      await userModal.findByIdAndUpdate(user._id, { isVerified: true });
+    } else {
+      const otp = Math.floor(Math.random() * 900000) + 100000;
 
-    await userModal.findOneAndUpdate(
-      { email },
-      {
-        otp,
-        otpExpiry: Date.now() + 10 * 60 * 1000,
-      },
-    );
+      await userModal.findOneAndUpdate(
+        { email },
+        { otp, otpExpiry: Date.now() + 10 * 60 * 1000 },
+      );
 
-    await sendEmail(email, otp);
-    return res.status(200).json({
-      message: "Email not verified, OTP sent to email",
-      user: {
-        id: user._id,
-        email: user.email,
-        username: user.username,
-        verified: user.isVerified,
-      },
-    });
+      await sendEmail(email, otp);
+      return res.status(200).json({
+        message: "Email not verified, OTP sent to email",
+        user: {
+          id: user._id,
+          email: user.email,
+          username: user.username,
+          verified: user.isVerified,
+        },
+      });
+    }
   }
 
   // Generate a JWT token for the logged-in user
